@@ -6,11 +6,9 @@ import { GlassRecognitionResult } from '../components/GlassRecognitionResult';
 import { Scene3D } from '../components/Scene3D';
 import { LoadingAnimation } from '../components/LoadingAnimation';
 import { recognizeBuildingMulti, fileToBase64Many } from '../lib/ai/recognition';
-import { recognizeBuildingLocalMulti, loadLocalRecognitionModel } from '../lib/ai/localRecognition';
 import { useAppContext } from '../contexts/AppContext';
 import { useRecognitionHistory } from '../hooks/useDatabase';
 import { Link } from 'react-router-dom';
-import type { RecognitionResult } from '../types/ai';
 
 export default function HomePage() {
   const { recognitionResult: result, setRecognitionResult: setGlobalResult } = useAppContext();
@@ -18,7 +16,6 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
-  const [aiMode, setAIMode] = useState<'cloud' | 'local'>('cloud');
 
   const handleImageUpload = useCallback(async (files: File[], previews: string[]) => {
     void previews;
@@ -26,14 +23,8 @@ export default function HomePage() {
     setError(null);
 
     try {
-      let recognitionResult: RecognitionResult | undefined;
-
-      if (aiMode === 'local') {
-        recognitionResult = await recognizeBuildingLocalMulti(files);
-      } else {
-        const base64List = await fileToBase64Many(files);
-        recognitionResult = await recognizeBuildingMulti(base64List);
-      }
+      const base64List = await fileToBase64Many(files);
+      const recognitionResult = await recognizeBuildingMulti(base64List);
 
       setGlobalResult(recognitionResult);
       await addToHistory(recognitionResult, files.length);
@@ -43,18 +34,7 @@ export default function HomePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [aiMode, setGlobalResult, addToHistory]);
-
-  const handleAIModeChange = useCallback((mode: 'cloud' | 'local') => {
-    setAIMode(mode);
-    setError(null);
-
-    if (mode === 'local') {
-      void loadLocalRecognitionModel().catch((err) => {
-        console.error('本地模型加载失败:', err);
-      });
-    }
-  }, []);
+  }, [setGlobalResult, addToHistory]);
 
   return (
     <div className="min-h-screen page-container">
@@ -256,8 +236,6 @@ export default function HomePage() {
                 <GlassImageUploader
                   onImageUpload={handleImageUpload}
                   isLoading={isLoading}
-                  aiMode={aiMode}
-                  onAIModeChange={handleAIModeChange}
                 />
               </div>
 

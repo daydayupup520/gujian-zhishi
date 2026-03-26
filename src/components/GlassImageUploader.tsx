@@ -5,8 +5,6 @@ import { Upload, Image as ImageIcon, X, Sparkles } from 'lucide-react';
 interface GlassImageUploaderProps {
   onImageUpload: (files: File[], previews: string[]) => void;
   isLoading?: boolean;
-  aiMode?: 'cloud' | 'local';
-  onAIModeChange?: (mode: 'cloud' | 'local') => void;
 }
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -15,8 +13,6 @@ const MAX_FILES = 6;
 export const GlassImageUploader: React.FC<GlassImageUploaderProps> = ({
   onImageUpload,
   isLoading = false,
-  aiMode = 'cloud',
-  onAIModeChange,
 }) => {
   const [dragActive, setDragActive] = useState(false);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -99,35 +95,6 @@ export const GlassImageUploader: React.FC<GlassImageUploaderProps> = ({
 
   return (
     <div className="w-full">
-      <div className="mb-4 flex items-center justify-between rounded-xl border border-indigo-500/15 bg-[rgba(15,20,40,0.45)] p-3">
-        <div>
-          <p className="text-sm font-medium text-slate-200">AI 模式</p>
-          <p className="text-xs text-slate-400">云端高精度 / 本地离线演示双模式</p>
-        </div>
-        <div className="inline-flex rounded-full border border-indigo-500/20 bg-white/5 p-1">
-          <button
-            type="button"
-            onClick={() => onAIModeChange?.('cloud')}
-            className={`px-3 py-1.5 text-xs rounded-full transition-colors ${
-              aiMode === 'cloud' ? 'bg-blue-500 text-white' : 'text-slate-400 hover:text-white'
-            }`}
-            disabled={isLoading}
-          >
-            Cloud AI
-          </button>
-          <button
-            type="button"
-            onClick={() => onAIModeChange?.('local')}
-            className={`px-3 py-1.5 text-xs rounded-full transition-colors ${
-              aiMode === 'local' ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white'
-            }`}
-            disabled={isLoading}
-          >
-            Local AI
-          </button>
-        </div>
-      </div>
-
       <AnimatePresence mode="wait">
         {previews.length > 0 ? (
           <motion.div
@@ -171,7 +138,7 @@ export const GlassImageUploader: React.FC<GlassImageUploaderProps> = ({
                   </motion.div>
                   <div className="flex items-center gap-2 text-imperial-gold justify-center">
                     <Sparkles className="w-5 h-5 animate-pulse" />
-                    <span>{aiMode === 'local' ? 'Local AI 离线识别中...' : 'Cloud AI 多视角融合识别中...'}</span>
+                    <span>Cloud AI 多视角融合识别中...</span>
                   </div>
                 </div>
               </div>
