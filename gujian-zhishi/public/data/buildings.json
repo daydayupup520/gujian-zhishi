@@ -1,0 +1,584 @@
+{
+  "buildings": [
+    {
+      "id": "chengqi-tulou",
+      "name": "承启楼（福建土楼）",
+      "nameEn": "Chengqi Lou (Fujian Tulou)",
+      "category": "民居",
+      "era": "清",
+      "year": "1709",
+      "location": "福建省龙岩市永定区高头镇",
+      "features": [
+        "夯土承重墙",
+        "环形围合",
+        "多层合院",
+        "聚族而居"
+      ],
+      "description": "永定土楼代表作之一，外圈高大夯土墙形成防御性围合，内设多层木构廊道与院落空间。",
+      "image": "images/chengqi-tulou.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:承启楼内部 - Inner Structure of Chengqi Tulou - 2010.07 - panoramio.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:%E6%89%BF%E5%90%AF%E6%A5%BC%E5%86%85%E9%83%A8_-_Inner_Structure_of_Chengqi_Tulou_-_2010.07_-_panoramio.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/%E6%89%BF%E5%90%AF%E6%A5%BC%E5%86%85%E9%83%A8_-_Inner_Structure_of_Chengqi_Tulou_-_2010.07_-_panoramio.jpg/1280px-%E6%89%BF%E5%90%AF%E6%A5%BC%E5%86%85%E9%83%A8_-_Inner_Structure_of_Chengqi_Tulou_-_2010.07_-_panoramio.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "artist": "rheins",
+          "credit": "https://web.archive.org/web/20161016154820/http://www.panoramio.com/photo/47550717"
+        }
+      }
+    },
+    {
+      "id": "beijing-siheyuan",
+      "name": "北京四合院（院落与影壁）",
+      "nameEn": "Beijing Siheyuan Courtyard",
+      "category": "民居",
+      "era": "明清",
+      "year": "明清形制（1900年代影像）",
+      "location": "北京市",
+      "features": [
+        "院落式布局",
+        "中轴对称",
+        "坐北朝南",
+        "影壁/照壁"
+      ],
+      "description": "以四面房屋围合成院为基本单元，讲究礼制轴线与居住秩序，是北方传统民居的典型形态。",
+      "image": "images/beijing-siheyuan.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Yingbi - \"Screen walls\" (影壁) or \"spirit walls\" are placed in courtyards in front of doors, Beijing (1900's).jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Yingbi_-_%22Screen_walls%22_(%E5%BD%B1%E5%A3%81)_or_%22spirit_walls%22_are_placed_in_courtyards_in_front_of_doors,_Beijing_(1900%27s).jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Yingbi_-_%22Screen_walls%22_%28%E5%BD%B1%E5%A3%81%29_or_%22spirit_walls%22_are_placed_in_courtyards_in_front_of_doors%2C_Beijing_%281900%27s%29.jpg",
+          "license": "Public domain",
+          "licenseUrl": "",
+          "artist": "Uncredited photographer.",
+          "credit": "http://www.zyxuan.org/siheyuan/yingbi.htm"
+        }
+      }
+    },
+    {
+      "id": "shaanxi-yaodong",
+      "name": "陕北窑洞（清涧一带）",
+      "nameEn": "Yaodong Cave Dwelling (Northern Shaanxi)",
+      "category": "民居",
+      "era": "明清至近代",
+      "year": "传统形制（以近代留存为主）",
+      "location": "陕西省榆林/延安一带",
+      "features": [
+        "依崖开凿",
+        "拱券洞口",
+        "冬暖夏凉",
+        "黄土高原材料"
+      ],
+      "description": "利用黄土高原地貌开凿或砌筑拱形居室，保温隔热性能良好，形成独特的地域居住景观。",
+      "image": "images/shaanxi-yaodong.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Snowfall on Yaodong, Qingjian County.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Snowfall_on_Yaodong,_Qingjian_County.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Snowfall_on_Yaodong%2C_Qingjian_County.jpg/1280px-Snowfall_on_Yaodong%2C_Qingjian_County.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "artist": "dayu490301",
+          "credit": "https://web.archive.org/web/20161014223639/http://www.panoramio.com/photo/33543200"
+        }
+      }
+    },
+    {
+      "id": "kaiping-diaolou",
+      "name": "开平碉楼与村落（自力村一带）",
+      "nameEn": "Kaiping Diaolou (Zili Village)",
+      "category": "民居",
+      "era": "清末",
+      "year": "19世纪末-1911",
+      "location": "广东省江门市开平市",
+      "features": [
+        "侨乡民居",
+        "防御功能",
+        "中西合璧立面",
+        "钢筋/砖石结构"
+      ],
+      "description": "侨乡聚落中兼具居住与防御的高层碉楼建筑，立面常呈现中西融合的装饰与构造特征。",
+      "image": "images/kaiping-diaolou.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Diaolou Cluster in Zili Village (3483695171).jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Diaolou_Cluster_in_Zili_Village_(3483695171).jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Diaolou_Cluster_in_Zili_Village_%283483695171%29.jpg/1280px-Diaolou_Cluster_in_Zili_Village_%283483695171%29.jpg",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "artist": "Kevin Poh from Petaling Jaya, Malaysia",
+          "credit": "Diaolou Cluster in Zili Village"
+        }
+      }
+    },
+    {
+      "id": "hongcun-residence",
+      "name": "宏村徽派民居街巷",
+      "nameEn": "Hongcun Hui-style Residences",
+      "category": "民居",
+      "era": "明清",
+      "year": "明清（现存建筑多成型于明清）",
+      "location": "安徽省黄山市黟县宏村",
+      "features": [
+        "粉墙黛瓦",
+        "马头墙",
+        "天井采光",
+        "街巷水系"
+      ],
+      "description": "徽派民居以粉墙黛瓦、马头墙与天井空间著称，村落肌理与水系组织共同塑造了整体风貌。",
+      "image": "images/hongcun-residence.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Street of Hongcun 20141110.JPG",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Street_of_Hongcun_20141110.JPG",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Street_of_Hongcun_20141110.JPG/1280px-Street_of_Hongcun_20141110.JPG",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "artist": "颐园新居",
+          "credit": "Own work"
+        }
+      }
+    },
+    {
+      "id": "pingyao-yamen",
+      "name": "平遥县衙",
+      "nameEn": "Pingyao County Government Office",
+      "category": "官府",
+      "era": "明清",
+      "year": "明清（现存建筑多为明清格局）",
+      "location": "山西省晋中市平遥县",
+      "features": [
+        "中轴对称",
+        "大堂/二堂",
+        "仪门与甬道",
+        "官署礼制空间"
+      ],
+      "description": "县级官署的典型布局，沿中轴组织仪门、大堂、二堂等空间，体现行政与礼制的结合。",
+      "image": "images/pingyao-yamen.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Pingyao County Government Office 平遙縣署 - panoramio.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Pingyao_County_Government_Office_%E5%B9%B3%E9%81%99%E7%B8%A3%E7%BD%B2_-_panoramio.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Pingyao_County_Government_Office_%E5%B9%B3%E9%81%99%E7%B8%A3%E7%BD%B2_-_panoramio.jpg/1280px-Pingyao_County_Government_Office_%E5%B9%B3%E9%81%99%E7%B8%A3%E7%BD%B2_-_panoramio.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "artist": "lienyuan lee",
+          "credit": "https://web.archive.org/web/20161103034057/http://www.panoramio.com/photo/132237213"
+        }
+      }
+    },
+    {
+      "id": "neixiang-yamen",
+      "name": "内乡县衙",
+      "nameEn": "Neixiang County Yamen",
+      "category": "官府",
+      "era": "元明清",
+      "year": "元起建制，明清为主",
+      "location": "河南省南阳市内乡县",
+      "features": [
+        "官署院落",
+        "木构与砖石结合",
+        "轴线串联多进院",
+        "政务与生活分区"
+      ],
+      "description": "保存较完整的县衙官署建筑群之一，院落层层递进，体现古代地方行政空间的组织方式。",
+      "image": "images/neixiang-yamen.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Neixiang Yamen 07.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Neixiang_Yamen_07.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Neixiang_Yamen_07.jpg/1280px-Neixiang_Yamen_07.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "artist": "Gary Todd",
+          "credit": "https://www.flickr.com/photos/101561334@N08/10265922084/"
+        }
+      }
+    },
+    {
+      "id": "zhili-zongdushu",
+      "name": "直隶总督署（保定）",
+      "nameEn": "Zhili Governor-General's Office (Baoding)",
+      "category": "官府",
+      "era": "清",
+      "year": "1661设署（清代官署建筑群）",
+      "location": "河北省保定市",
+      "features": [
+        "总督官署",
+        "多进院落",
+        "大堂礼制空间",
+        "清代官式构件"
+      ],
+      "description": "清代重要的地方最高行政长官官署之一，空间以轴线与多进院落组织，兼具政务与官邸功能。",
+      "image": "images/zhili-zongdushu.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:保定直隶总督署大堂2024.3 (1).jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:%E4%BF%9D%E5%AE%9A%E7%9B%B4%E9%9A%B6%E6%80%BB%E7%9D%A3%E7%BD%B2%E5%A4%A7%E5%A0%822024.3_(1).jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/%E4%BF%9D%E5%AE%9A%E7%9B%B4%E9%9A%B6%E6%80%BB%E7%9D%A3%E7%BD%B2%E5%A4%A7%E5%A0%822024.3_%281%29.jpg/1280px-%E4%BF%9D%E5%AE%9A%E7%9B%B4%E9%9A%B6%E6%80%BB%E7%9D%A3%E7%BD%B2%E5%A4%A7%E5%A0%822024.3_%281%29.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "artist": "ScareCriterion12",
+          "credit": "Own work"
+        }
+      }
+    },
+    {
+      "id": "lijiang-mufu",
+      "name": "丽江木府",
+      "nameEn": "Mu's Residence (Lijiang)",
+      "category": "官府",
+      "era": "明",
+      "year": "1382始建（明清沿用）",
+      "location": "云南省丽江市古城区",
+      "features": [
+        "府邸官署合一",
+        "木构台基",
+        "轴线院落",
+        "纳西地区文化融合"
+      ],
+      "description": "丽江木氏土司的府邸与政务空间，院落沿轴线展开，体现地方权力与区域文化交融的建筑形态。",
+      "image": "images/lijiang-mufu.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:2002年丽江木府 - panoramio.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:2002%E5%B9%B4%E4%B8%BD%E6%B1%9F%E6%9C%A8%E5%BA%9C_-_panoramio.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/2002%E5%B9%B4%E4%B8%BD%E6%B1%9F%E6%9C%A8%E5%BA%9C_-_panoramio.jpg/1280px-2002%E5%B9%B4%E4%B8%BD%E6%B1%9F%E6%9C%A8%E5%BA%9C_-_panoramio.jpg",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "artist": "wanghongliu",
+          "credit": "https://web.archive.org/web/20161029080940/http://www.panoramio.com/photo/92343937"
+        }
+      }
+    },
+    {
+      "id": "prince-gong-mansion",
+      "name": "恭王府",
+      "nameEn": "Prince Gong's Mansion",
+      "category": "官府",
+      "era": "清",
+      "year": "1776-1777",
+      "location": "北京市西城区",
+      "features": [
+        "王府规制",
+        "多进院落",
+        "府邸与花园",
+        "清代木作彩绘"
+      ],
+      "description": "清代规模较大的王府建筑群，前府后园，院落层次分明，兼具礼制空间与园林景观。",
+      "image": "images/prince-gong-mansion.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:2014.08.17.155256 Prince Gong's Mansion Beijing.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:2014.08.17.155256_Prince_Gong%27s_Mansion_Beijing.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/2014.08.17.155256_Prince_Gong%27s_Mansion_Beijing.jpg/1280px-2014.08.17.155256_Prince_Gong%27s_Mansion_Beijing.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "artist": "Hermann Luyken",
+          "credit": "Own work"
+        }
+      }
+    },
+    {
+      "id": "forbidden-city-taihe",
+      "name": "太和殿（故宫）",
+      "nameEn": "Hall of Supreme Harmony",
+      "category": "皇宫",
+      "era": "明清",
+      "year": "1420（明永乐）",
+      "location": "北京市东城区",
+      "features": [
+        "重檐庑殿顶",
+        "高台基",
+        "黄色琉璃瓦",
+        "中轴礼制核心"
+      ],
+      "description": "故宫外朝核心大殿，承载重大典礼与朝会，形制恢弘，体现明清宫殿建筑的最高等级。",
+      "image": "images/forbidden-city-taihe.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Hall of Supreme Harmony.JPG",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Hall_of_Supreme_Harmony.JPG",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Hall_of_Supreme_Harmony.JPG/1280px-Hall_of_Supreme_Harmony.JPG",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "artist": "Gisling",
+          "credit": "Own work"
+        }
+      }
+    },
+    {
+      "id": "forbidden-city-wumen",
+      "name": "午门（故宫）",
+      "nameEn": "Meridian Gate (Forbidden City)",
+      "category": "皇宫",
+      "era": "明清",
+      "year": "1420（明永乐）",
+      "location": "北京市东城区",
+      "features": [
+        "宫城正门",
+        "五阙形制",
+        "城台与楼阁结合",
+        "礼制仪式入口"
+      ],
+      "description": "紫禁城南端正门，城台与门楼复合，形成显著的五阙形制，是皇家礼仪的重要空间节点。",
+      "image": "images/forbidden-city-wumen.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Meridian Gate, Forbidden City center.JPG",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Meridian_Gate,_Forbidden_City_center.JPG",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Meridian_Gate%2C_Forbidden_City_center.JPG/1280px-Meridian_Gate%2C_Forbidden_City_center.JPG",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "artist": "BrokenSphere",
+          "credit": "Own work"
+        }
+      }
+    },
+    {
+      "id": "forbidden-city-qianqing",
+      "name": "乾清宫（故宫）",
+      "nameEn": "Palace of Heavenly Purity",
+      "category": "皇宫",
+      "era": "明清",
+      "year": "1420（明永乐）",
+      "location": "北京市东城区",
+      "features": [
+        "内廷主殿",
+        "重檐歇山顶",
+        "金龙和玺彩画",
+        "宫廷生活与政务"
+      ],
+      "description": "内廷重要宫殿之一，长期作为皇帝处理政务与居住的核心空间，体现宫廷生活与权力结构。",
+      "image": "images/forbidden-city-qianqing.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:QianQingGong.JPG",
+          "filePage": "https://commons.wikimedia.org/wiki/File:QianQingGong.JPG",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ce/QianQingGong.JPG",
+          "license": "Public domain",
+          "licenseUrl": "",
+          "artist": "Tianxiaozhang at Chinese Wikipedia",
+          "credit": "Transferred from zh.wikipedia to Commons by Olivier2 using CommonsHelper."
+        }
+      }
+    },
+    {
+      "id": "summer-palace-long-corridor",
+      "name": "颐和园长廊",
+      "nameEn": "Long Corridor (Summer Palace)",
+      "category": "皇宫",
+      "era": "清",
+      "year": "1750（始建）/1886（重建）",
+      "location": "北京市海淀区",
+      "features": [
+        "长尺度连廊",
+        "彩绘梁枋",
+        "倚山临水",
+        "园林游赏动线"
+      ],
+      "description": "沿昆明湖岸与万寿山脚设置的长尺度游廊，通过彩绘与连续空间组织园林游赏路径。",
+      "image": "images/summer-palace-long-corridor.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Summer Palace Long Corridor (9864916116).jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Summer_Palace_Long_Corridor_(9864916116).jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Summer_Palace_Long_Corridor_%289864916116%29.jpg/1280px-Summer_Palace_Long_Corridor_%289864916116%29.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "artist": "Gary Todd from Xinzheng, China",
+          "credit": "Summer Palace: Long Corridor"
+        }
+      }
+    },
+    {
+      "id": "shenyang-dazheng",
+      "name": "大政殿（沈阳故宫）",
+      "nameEn": "Dazheng Hall (Shenyang Imperial Palace)",
+      "category": "皇宫",
+      "era": "后金/清",
+      "year": "1625",
+      "location": "辽宁省沈阳市沈河区",
+      "features": [
+        "八角攒尖顶",
+        "满族宫殿形制",
+        "木构与砖石台基",
+        "早期清廷礼仪空间"
+      ],
+      "description": "沈阳故宫标志性建筑之一，形制独特，反映后金至清初宫殿建筑与礼仪制度的过渡特征。",
+      "image": "images/shenyang-dazheng.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Dazheng Hall 070314.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Dazheng_Hall_070314.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Dazheng_Hall_070314.jpg/1280px-Dazheng_Hall_070314.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "artist": "Wilson44691",
+          "credit": "Own work"
+        }
+      }
+    },
+    {
+      "id": "zhaozhou-bridge",
+      "name": "赵州桥（安济桥）",
+      "nameEn": "Zhaozhou Bridge (Anji Bridge)",
+      "category": "桥梁",
+      "era": "隋",
+      "year": "595-605",
+      "location": "河北省石家庄市赵县",
+      "features": [
+        "单孔敞肩石拱",
+        "减重小拱",
+        "石砌拱券",
+        "早期工程创新"
+      ],
+      "description": "世界著名的单孔敞肩石拱桥，通过敞肩小拱减重并利于泄洪，是古代桥梁工程的里程碑。",
+      "image": "images/zhaozhou-bridge.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Zhaozhou or Anji Bridge.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Zhaozhou_or_Anji_Bridge.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Zhaozhou_or_Anji_Bridge.jpg/1280px-Zhaozhou_or_Anji_Bridge.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "artist": "wanghongliu and Xyklone",
+          "credit": "Cropped and edited from"
+        }
+      }
+    },
+    {
+      "id": "lugou-bridge",
+      "name": "卢沟桥",
+      "nameEn": "Lugou Bridge (Marco Polo Bridge)",
+      "category": "桥梁",
+      "era": "金",
+      "year": "1189-1192",
+      "location": "北京市丰台区",
+      "features": [
+        "多孔石拱桥",
+        "栏板望柱",
+        "石狮装饰",
+        "古代交通要道"
+      ],
+      "description": "北京地区重要的古桥之一，以多孔石拱结构与桥上石狮群著称，长期承担跨河交通功能。",
+      "image": "images/lugou-bridge.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Thomas Child - Marco Polo Bridge (Lugou Qiao), Peking, 1877 NA01-75.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Thomas_Child_-_Marco_Polo_Bridge_(Lugou_Qiao),_Peking,_1877_NA01-75.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Thomas_Child_-_Marco_Polo_Bridge_%28Lugou_Qiao%29%2C_Peking%2C_1877_NA01-75.jpg",
+          "license": "Public domain",
+          "licenseUrl": "",
+          "artist": "Thomas Child (1841-1898)",
+          "credit": "University Of Bristol"
+        }
+      }
+    },
+    {
+      "id": "guangji-bridge",
+      "name": "广济桥（湘子桥）",
+      "nameEn": "Guangji Bridge (Xiangzi Bridge)",
+      "category": "桥梁",
+      "era": "宋",
+      "year": "1171（始建）",
+      "location": "广东省潮州市",
+      "features": [
+        "梁桥与浮桥结合",
+        "多段可开合",
+        "桥亭与桥楼",
+        "韩江跨越"
+      ],
+      "description": "潮州韩江上的古桥，结构形式多样，历史上兼具通行、泄洪与水运通道等功能。",
+      "image": "images/guangji-bridge.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Guangji Bridge.JPG",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Guangji_Bridge.JPG",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Guangji_Bridge.JPG/1280px-Guangji_Bridge.JPG",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "artist": "小杰杰",
+          "credit": "http://picasaweb.google.com/qq1025020824/norbAL#5332942921941739522"
+        }
+      }
+    },
+    {
+      "id": "anping-bridge",
+      "name": "安平桥（五里桥）",
+      "nameEn": "Anping Bridge (Wuli Bridge)",
+      "category": "桥梁",
+      "era": "宋",
+      "year": "1138-1151",
+      "location": "福建省泉州市晋江市安海镇",
+      "features": [
+        "跨海石梁桥",
+        "长桥多墩",
+        "花岗岩石构",
+        "海潮环境适应"
+      ],
+      "description": "著名的跨海石梁桥，通过密集桥墩与石梁组合跨越海湾，体现宋代桥梁工程与材料运用水平。",
+      "image": "images/anping-bridge.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Anping Bridge - looking toward the east end - DSCF9010.JPG",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Anping_Bridge_-_looking_toward_the_east_end_-_DSCF9010.JPG",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Anping_Bridge_-_looking_toward_the_east_end_-_DSCF9010.JPG/1280px-Anping_Bridge_-_looking_toward_the_east_end_-_DSCF9010.JPG",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "artist": "User:Vmenkov",
+          "credit": "Own work"
+        }
+      }
+    },
+    {
+      "id": "wuting-bridge",
+      "name": "五亭桥（扬州瘦西湖）",
+      "nameEn": "Five Pavilion Bridge (Yangzhou)",
+      "category": "桥梁",
+      "era": "清",
+      "year": "1757",
+      "location": "江苏省扬州市",
+      "features": [
+        "桥亭结合",
+        "多拱石桥",
+        "园林景观构图",
+        "清代装饰细部"
+      ],
+      "description": "瘦西湖园林中的标志性桥梁，以桥亭组合和多拱结构形成独特的景观节点，兼具通行与观景功能。",
+      "image": "images/wuting-bridge.jpg",
+      "metadata": {
+        "imageSource": {
+          "provider": "Wikimedia Commons",
+          "fileTitle": "File:Five Pavilion Bridge1.jpg",
+          "filePage": "https://commons.wikimedia.org/wiki/File:Five_Pavilion_Bridge1.jpg",
+          "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Five_Pavilion_Bridge1.jpg/1280px-Five_Pavilion_Bridge1.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "artist": "江上清风1961",
+          "credit": "panoramio"
+        }
+      }
+    }
+  ]
+}
