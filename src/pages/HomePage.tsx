@@ -5,7 +5,7 @@ import { GlassImageUploader } from '../components/GlassImageUploader';
 import { GlassRecognitionResult } from '../components/GlassRecognitionResult';
 import { Scene3D } from '../components/Scene3D';
 import { LoadingAnimation } from '../components/LoadingAnimation';
-import { recognizeBuildingMulti, mockRecognizeBuilding, fileToBase64Many } from '../lib/ai/recognition';
+import { recognizeBuildingMulti, fileToBase64Many } from '../lib/ai/recognition';
 import { useAppContext } from '../contexts/AppContext';
 import { useRecognitionHistory } from '../hooks/useDatabase';
 import { Link } from 'react-router-dom';
@@ -24,16 +24,11 @@ export default function HomePage() {
     setError(null);
 
     try {
-      const apiKey = import.meta.env.VITE_ZHIPU_API_KEY;
       let recognitionResult: RecognitionResult | undefined;
 
-      if (apiKey && apiKey !== '把你的API密钥填在这里') {
-        const base64List = await fileToBase64Many(files);
-        recognitionResult = await recognizeBuildingMulti(base64List);
-      } else {
-        console.log('未配置 API Key，使用模拟数据');
-        recognitionResult = await mockRecognizeBuilding(files.length);
-      }
+      // 直接调用真实 API（API key 已在 recognition.ts 中配置）
+      const base64List = await fileToBase64Many(files);
+      recognitionResult = await recognizeBuildingMulti(base64List);
 
       setGlobalResult(recognitionResult);
       await addToHistory(recognitionResult, files.length);
