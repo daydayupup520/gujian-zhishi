@@ -1,0 +1,429 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   古建智识 - 科技深蓝设计系统
+   ======================================== */
+
+:root {
+  /* 背景色阶 */
+  --bg-0: #0a0a1a;
+  --bg-1: #0f1024;
+  --bg-2: #141530;
+  --bg-dark: #050510;
+
+  /* 文字色阶 */
+  --ink-strong: #f1f5f9;
+  --ink: #e2e8f0;
+  --ink-soft: #94a3b8;
+  --ink-muted: #64748b;
+  --ink-light: #475569;
+
+  /* 主色 - 蓝 */
+  --gold: #3b82f6;
+  --gold-light: #60a5fa;
+  --gold-dark: #2563eb;
+  --gold-muted: #6366f1;
+
+  /* 强调色 - 紫 */
+  --china-red: #a78bfa;
+  --china-red-light: #c4b5fd;
+  --china-red-dark: #7c3aed;
+
+  /* 功能色 */
+  --line: rgba(99, 102, 241, 0.12);
+  --line-strong: rgba(99, 102, 241, 0.24);
+  --surface: rgba(15, 20, 40, 0.72);
+  --surface-strong: rgba(15, 20, 40, 0.88);
+
+  /* 阴影 */
+  --shadow-soft: 0 12px 36px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --shadow-gold: 0 4px 20px rgba(59, 130, 246, 0.3);
+
+  /* 圆角 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* 过渡 */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(59, 130, 246, 0.15) 0%, transparent 35%),
+    radial-gradient(circle at 88% 8%, rgba(139, 92, 246, 0.1) 0%, transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 50%, var(--bg-2) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  overflow-x: hidden;
+  min-height: 100vh;
+  font-family: 'Inter', 'PingFang SC', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@layer base {
+  ::selection {
+    background: rgba(59, 130, 246, 0.3);
+    color: var(--ink-strong);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.015em;
+    color: var(--ink-strong);
+  }
+}
+
+@layer components {
+  .app-shell {
+    min-height: 100vh;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 15% 8%, rgba(59, 130, 246, 0.12) 0%, transparent 28%),
+      radial-gradient(circle at 88% 3%, rgba(139, 92, 246, 0.08) 0%, transparent 30%);
+  }
+
+  .page-frame {
+    position: relative;
+    padding-bottom: 5rem;
+  }
+
+  .page-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .top-nav-glass {
+    background: rgba(10, 10, 26, 0.4);
+    border-bottom: 1px solid transparent;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.45s ease;
+  }
+
+  .top-nav-glass--scrolled {
+    background: rgba(10, 10, 26, 0.85);
+    border-bottom-color: var(--line);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .surface-card {
+    background: linear-gradient(165deg, var(--surface-strong) 0%, var(--surface) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.12);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* 动画工具类 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ========================================
+   科技深蓝风格组件样式
+   ======================================== */
+
+@layer components {
+  /* 主按钮 - 蓝紫渐变 */
+  .btn-primary {
+    position: relative;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 9999px;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 8px 40px rgba(59, 130, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.7s;
+  }
+
+  .btn-primary:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* 次要按钮 */
+  .btn-secondary {
+    padding: 1rem 2rem;
+    background: rgba(15, 20, 40, 0.6);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: var(--ink);
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(0);
+  }
+
+  /* 印章风格按钮 → 紫色按钮 */
+  .btn-seal {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    color: white;
+    font-weight: 700;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
+    transition: all 0.3s;
+  }
+
+  .btn-seal:hover {
+    background: linear-gradient(135deg, #8b5cf6, #818cf8);
+    box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.4);
+  }
+
+  /* 玻璃卡片 - 深色 */
+  .card-glass {
+    background: rgba(15, 20, 40, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(99, 102, 241, 0.12);
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s;
+  }
+
+  .card-glass:hover {
+    box-shadow: 0 8px 40px rgba(59, 130, 246, 0.15);
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.25);
+  }
+
+  /* 蓝色边框卡片 */
+  .card-gold {
+    background: rgba(15, 20, 40, 0.5);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s;
+  }
+
+  .card-gold:hover {
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.35);
+  }
+
+  /* feature 卡片 */
+  .card-feature {
+    position: relative;
+    padding: 2rem;
+    background: rgba(15, 20, 40, 0.5);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.5s;
+  }
+
+  .card-feature:hover {
+    box-shadow: 0 8px 40px rgba(59, 130, 246, 0.15);
+    transform: translateY(-8px);
+    background: rgba(15, 20, 40, 0.7);
+    border-color: rgba(99, 102, 241, 0.25);
+  }
+
+  .card-feature::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.5s;
+    border-radius: 12px;
+    pointer-events: none;
+  }
+
+  .card-feature:hover::before {
+    opacity: 1;
+  }
+
+  /* 文字渐变 - 蓝紫 */
+  .text-gradient-gold {
+    background: linear-gradient(to right, #60a5fa, #a78bfa, #60a5fa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-red {
+    background: linear-gradient(to right, #8b5cf6, #c4b5fd, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* 导航栏玻璃效果 */
+  .nav-glass {
+    background: rgba(10, 10, 26, 0.7);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* 装饰性边框 */
+  .border-decorated {
+    position: relative;
+  }
+
+  .border-decorated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #3b82f6, transparent);
+  }
+
+  /* 纹样背景 */
+  .bg-pattern-china {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* 标签样式 */
+  .tag-gold {
+    padding: 0.25rem 0.75rem;
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    font-size: 0.875rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .tag-red {
+    padding: 0.25rem 0.75rem;
+    background: rgba(139, 92, 246, 0.1);
+    color: #a78bfa;
+    font-size: 0.875rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+  }
+
+  /* 章节标题样式 */
+  .section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--ink-strong);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-title {
+      font-size: 3rem;
+    }
+  }
+
+  .section-subtitle {
+    font-size: 1.25rem;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4rem;
+  }
+
+  /* 徽章样式 */
+  .badge-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 9999px;
+    color: #60a5fa;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "generatedAt": "2026-02-28T13:09:30.247Z",
+  "items": [
+    {
+      "id": "chengqi-tulou",
+      "category": "民居",
+      "searchTerm": "Chengqi Lou tulou",
+      "width": 1280,
+      "image": "images/chengqi-tulou.jpg",
+      "source": {
+        "fileTitle": "File:承启楼内部 - Inner Structure of Chengqi Tulou - 2010.07 - panoramio.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:%E6%89%BF%E5%90%AF%E6%A5%BC%E5%86%85%E9%83%A8_-_Inner_Structure_of_Chengqi_Tulou_-_2010.07_-_panoramio.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/%E6%89%BF%E5%90%AF%E6%A5%BC%E5%86%85%E9%83%A8_-_Inner_Structure_of_Chengqi_Tulou_-_2010.07_-_panoramio.jpg/1280px-%E6%89%BF%E5%90%AF%E6%A5%BC%E5%86%85%E9%83%A8_-_Inner_Structure_of_Chengqi_Tulou_-_2010.07_-_panoramio.jpg",
+        "licenseShortName": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "rheins",
+        "credit": "https://web.archive.org/web/20161016154820/http://www.panoramio.com/photo/47550717"
+      }
+    },
+    {
+      "id": "beijing-siheyuan",
+      "category": "民居",
+      "searchTerm": "Beijing siheyuan courtyard",
+      "width": 1280,
+      "image": "images/beijing-siheyuan.jpg",
+      "source": {
+        "fileTitle": "File:Yingbi - \"Screen walls\" (影壁) or \"spirit walls\" are placed in courtyards in front of doors, Beijing (1900's).jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Yingbi_-_%22Screen_walls%22_(%E5%BD%B1%E5%A3%81)_or_%22spirit_walls%22_are_placed_in_courtyards_in_front_of_doors,_Beijing_(1900%27s).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Yingbi_-_%22Screen_walls%22_%28%E5%BD%B1%E5%A3%81%29_or_%22spirit_walls%22_are_placed_in_courtyards_in_front_of_doors%2C_Beijing_%281900%27s%29.jpg",
+        "licenseShortName": "Public domain",
+        "licenseUrl": "",
+        "artist": "Uncredited photographer.",
+        "credit": "http://www.zyxuan.org/siheyuan/yingbi.htm"
+      }
+    },
+    {
+      "id": "shaanxi-yaodong",
+      "category": "民居",
+      "searchTerm": "Shaanxi yaodong",
+      "width": 1280,
+      "image": "images/shaanxi-yaodong.jpg",
+      "source": {
+        "fileTitle": "File:Snowfall on Yaodong, Qingjian County.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Snowfall_on_Yaodong,_Qingjian_County.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Snowfall_on_Yaodong%2C_Qingjian_County.jpg/1280px-Snowfall_on_Yaodong%2C_Qingjian_County.jpg",
+        "licenseShortName": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "dayu490301",
+        "credit": "https://web.archive.org/web/20161014223639/http://www.panoramio.com/photo/33543200"
+      }
+    },
+    {
+      "id": "kaiping-diaolou",
+      "category": "民居",
+      "searchTerm": "Kaiping Diaolou Zili Village",
+      "width": 1280,
+      "image": "images/kaiping-diaolou.jpg",
+      "source": {
+        "fileTitle": "File:Diaolou Cluster in Zili Village (3483695171).jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Diaolou_Cluster_in_Zili_Village_(3483695171).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Diaolou_Cluster_in_Zili_Village_%283483695171%29.jpg/1280px-Diaolou_Cluster_in_Zili_Village_%283483695171%29.jpg",
+        "licenseShortName": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "artist": "Kevin Poh from Petaling Jaya, Malaysia",
+        "credit": "Diaolou Cluster in Zili Village"
+      }
+    },
+    {
+      "id": "hongcun-residence",
+      "category": "民居",
+      "searchTerm": "Hongcun",
+      "width": 1280,
+      "image": "images/hongcun-residence.jpg",
+      "source": {
+        "fileTitle": "File:Street of Hongcun 20141110.JPG",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Street_of_Hongcun_20141110.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Street_of_Hongcun_20141110.JPG/1280px-Street_of_Hongcun_20141110.JPG",
+        "licenseShortName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "颐园新居",
+        "credit": "Own work"
+      }
+    },
+    {
+      "id": "pingyao-yamen",
+      "category": "官府",
+      "searchTerm": "Pingyao County Yamen",
+      "width": 1280,
+      "image": "images/pingyao-yamen.jpg",
+      "source": {
+        "fileTitle": "File:Pingyao County Government Office 平遙縣署 - panoramio.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Pingyao_County_Government_Office_%E5%B9%B3%E9%81%99%E7%B8%A3%E7%BD%B2_-_panoramio.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Pingyao_County_Government_Office_%E5%B9%B3%E9%81%99%E7%B8%A3%E7%BD%B2_-_panoramio.jpg/1280px-Pingyao_County_Government_Office_%E5%B9%B3%E9%81%99%E7%B8%A3%E7%BD%B2_-_panoramio.jpg",
+        "licenseShortName": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "lienyuan lee",
+        "credit": "https://web.archive.org/web/20161103034057/http://www.panoramio.com/photo/132237213"
+      }
+    },
+    {
+      "id": "neixiang-yamen",
+      "category": "官府",
+      "searchTerm": "Neixiang County Yamen",
+      "width": 1280,
+      "image": "images/neixiang-yamen.jpg",
+      "source": {
+        "fileTitle": "File:Neixiang Yamen 07.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Neixiang_Yamen_07.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Neixiang_Yamen_07.jpg/1280px-Neixiang_Yamen_07.jpg",
+        "licenseShortName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "Gary Todd",
+        "credit": "https://www.flickr.com/photos/101561334@N08/10265922084/"
+      }
+    },
+    {
+      "id": "zhili-zongdushu",
+      "category": "官府",
+      "searchTerm": "直隶总督署",
+      "width": 1280,
+      "image": "images/zhili-zongdushu.jpg",
+      "source": {
+        "fileTitle": "File:保定直隶总督署大堂2024.3 (1).jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:%E4%BF%9D%E5%AE%9A%E7%9B%B4%E9%9A%B6%E6%80%BB%E7%9D%A3%E7%BD%B2%E5%A4%A7%E5%A0%822024.3_(1).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/%E4%BF%9D%E5%AE%9A%E7%9B%B4%E9%9A%B6%E6%80%BB%E7%9D%A3%E7%BD%B2%E5%A4%A7%E5%A0%822024.3_%281%29.jpg/1280px-%E4%BF%9D%E5%AE%9A%E7%9B%B4%E9%9A%B6%E6%80%BB%E7%9D%A3%E7%BD%B2%E5%A4%A7%E5%A0%822024.3_%281%29.jpg",
+        "licenseShortName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "ScareCriterion12",
+        "credit": "Own work"
+      }
+    },
+    {
+      "id": "lijiang-mufu",
+      "category": "官府",
+      "searchTerm": "丽江木府",
+      "width": 1280,
+      "image": "images/lijiang-mufu.jpg",
+      "source": {
+        "fileTitle": "File:2002年丽江木府 - panoramio.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:2002%E5%B9%B4%E4%B8%BD%E6%B1%9F%E6%9C%A8%E5%BA%9C_-_panoramio.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/2002%E5%B9%B4%E4%B8%BD%E6%B1%9F%E6%9C%A8%E5%BA%9C_-_panoramio.jpg/1280px-2002%E5%B9%B4%E4%B8%BD%E6%B1%9F%E6%9C%A8%E5%BA%9C_-_panoramio.jpg",
+        "licenseShortName": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "artist": "wanghongliu",
+        "credit": "https://web.archive.org/web/20161029080940/http://www.panoramio.com/photo/92343937"
+      }
+    },
+    {
+      "id": "prince-gong-mansion",
+      "category": "官府",
+      "searchTerm": "Prince Gong's Mansion",
+      "width": 1280,
+      "image": "images/prince-gong-mansion.jpg",
+      "source": {
+        "fileTitle": "File:2014.08.17.155256 Prince Gong's Mansion Beijing.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:2014.08.17.155256_Prince_Gong%27s_Mansion_Beijing.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/2014.08.17.155256_Prince_Gong%27s_Mansion_Beijing.jpg/1280px-2014.08.17.155256_Prince_Gong%27s_Mansion_Beijing.jpg",
+        "licenseShortName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "Hermann Luyken",
+        "credit": "Own work"
+      }
+    },
+    {
+      "id": "forbidden-city-taihe",
+      "category": "皇宫",
+      "searchTerm": "Hall of Supreme Harmony",
+      "width": 1280,
+      "image": "images/forbidden-city-taihe.jpg",
+      "source": {
+        "fileTitle": "File:Hall of Supreme Harmony.JPG",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Hall_of_Supreme_Harmony.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Hall_of_Supreme_Harmony.JPG/1280px-Hall_of_Supreme_Harmony.JPG",
+        "licenseShortName": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "Gisling",
+        "credit": "Own work"
+      }
+    },
+    {
+      "id": "forbidden-city-wumen",
+      "category": "皇宫",
+      "searchTerm": "Meridian Gate Forbidden City",
+      "width": 1280,
+      "image": "images/forbidden-city-wumen.jpg",
+      "source": {
+        "fileTitle": "File:Meridian Gate, Forbidden City center.JPG",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Meridian_Gate,_Forbidden_City_center.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Meridian_Gate%2C_Forbidden_City_center.JPG/1280px-Meridian_Gate%2C_Forbidden_City_center.JPG",
+        "licenseShortName": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "BrokenSphere",
+        "credit": "Own work"
+      }
+    },
+    {
+      "id": "forbidden-city-qianqing",
+      "category": "皇宫",
+      "searchTerm": "Palace of Heavenly Purity",
+      "width": 1280,
+      "image": "images/forbidden-city-qianqing.jpg",
+      "source": {
+        "fileTitle": "File:QianQingGong.JPG",
+        "filePage": "https://commons.wikimedia.org/wiki/File:QianQingGong.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ce/QianQingGong.JPG",
+        "licenseShortName": "Public domain",
+        "licenseUrl": "",
+        "artist": "Tianxiaozhang at Chinese Wikipedia",
+        "credit": "Transferred from zh.wikipedia to Commons by Olivier2 using CommonsHelper."
+      }
+    },
+    {
+      "id": "summer-palace-long-corridor",
+      "category": "皇宫",
+      "searchTerm": "Long Corridor Summer Palace",
+      "width": 1280,
+      "image": "images/summer-palace-long-corridor.jpg",
+      "source": {
+        "fileTitle": "File:Summer Palace Long Corridor (9864916116).jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Summer_Palace_Long_Corridor_(9864916116).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Summer_Palace_Long_Corridor_%289864916116%29.jpg/1280px-Summer_Palace_Long_Corridor_%289864916116%29.jpg",
+        "licenseShortName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "Gary Todd from Xinzheng, China",
+        "credit": "Summer Palace: Long Corridor"
+      }
+    },
+    {
+      "id": "shenyang-dazheng",
+      "category": "皇宫",
+      "searchTerm": "Dazheng Hall Shenyang Imperial Palace",
+      "width": 1280,
+      "image": "images/shenyang-dazheng.jpg",
+      "source": {
+        "fileTitle": "File:Dazheng Hall 070314.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Dazheng_Hall_070314.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Dazheng_Hall_070314.jpg/1280px-Dazheng_Hall_070314.jpg",
+        "licenseShortName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "Wilson44691",
+        "credit": "Own work"
+      }
+    },
+    {
+      "id": "zhaozhou-bridge",
+      "category": "桥梁",
+      "searchTerm": "Zhaozhou Bridge",
+      "width": 1280,
+      "image": "images/zhaozhou-bridge.jpg",
+      "source": {
+        "fileTitle": "File:Zhaozhou or Anji Bridge.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Zhaozhou_or_Anji_Bridge.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Zhaozhou_or_Anji_Bridge.jpg/1280px-Zhaozhou_or_Anji_Bridge.jpg",
+        "licenseShortName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "wanghongliu and Xyklone",
+        "credit": "Cropped and edited from"
+      }
+    },
+    {
+      "id": "lugou-bridge",
+      "category": "桥梁",
+      "searchTerm": "Lugou Bridge",
+      "width": 1280,
+      "image": "images/lugou-bridge.jpg",
+      "source": {
+        "fileTitle": "File:Thomas Child - Marco Polo Bridge (Lugou Qiao), Peking, 1877 NA01-75.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Thomas_Child_-_Marco_Polo_Bridge_(Lugou_Qiao),_Peking,_1877_NA01-75.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Thomas_Child_-_Marco_Polo_Bridge_%28Lugou_Qiao%29%2C_Peking%2C_1877_NA01-75.jpg",
+        "licenseShortName": "Public domain",
+        "licenseUrl": "",
+        "artist": "Thomas Child (1841-1898)",
+        "credit": "University Of Bristol"
+      }
+    },
+    {
+      "id": "guangji-bridge",
+      "category": "桥梁",
+      "searchTerm": "Guangji Bridge Chaozhou",
+      "width": 1280,
+      "image": "images/guangji-bridge.jpg",
+      "source": {
+        "fileTitle": "File:Guangji Bridge.JPG",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Guangji_Bridge.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Guangji_Bridge.JPG/1280px-Guangji_Bridge.JPG",
+        "licenseShortName": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "小杰杰",
+        "credit": "http://picasaweb.google.com/qq1025020824/norbAL#5332942921941739522"
+      }
+    },
+    {
+      "id": "anping-bridge",
+      "category": "桥梁",
+      "searchTerm": "Anping Bridge Quanzhou",
+      "width": 1280,
+      "image": "images/anping-bridge.jpg",
+      "source": {
+        "fileTitle": "File:Anping Bridge - looking toward the east end - DSCF9010.JPG",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Anping_Bridge_-_looking_toward_the_east_end_-_DSCF9010.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Anping_Bridge_-_looking_toward_the_east_end_-_DSCF9010.JPG/1280px-Anping_Bridge_-_looking_toward_the_east_end_-_DSCF9010.JPG",
+        "licenseShortName": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "artist": "User:Vmenkov",
+        "credit": "Own work"
+      }
+    },
+    {
+      "id": "wuting-bridge",
+      "category": "桥梁",
+      "searchTerm": "Five Pavilion Bridge Yangzhou",
+      "width": 1280,
+      "image": "images/wuting-bridge.jpg",
+      "source": {
+        "fileTitle": "File:Five Pavilion Bridge1.jpg",
+        "filePage": "https://commons.wikimedia.org/wiki/File:Five_Pavilion_Bridge1.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Five_Pavilion_Bridge1.jpg/1280px-Five_Pavilion_Bridge1.jpg",
+        "licenseShortName": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "江上清风1961",
+        "credit": "panoramio"
+      }
+    }
+  ],
+  "missing": []
+}
