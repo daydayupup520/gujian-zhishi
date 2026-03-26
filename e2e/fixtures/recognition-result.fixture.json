@@ -1,0 +1,53 @@
+{
+  "name": "故宫太和殿",
+  "category": "皇宫",
+  "era": "明清",
+  "year": "1420年",
+  "location": "北京",
+  "features": [
+    "重檐庑殿顶",
+    "黄色琉璃瓦",
+    "和玺彩画",
+    "龙纹装饰",
+    "三层汉白玉台基"
+  ],
+  "description": "故宫太和殿是中国现存最大的木结构大殿，位于北京紫禁城南北主轴线的显要位置。建筑气势恢宏，装饰华丽，是中国古代宫殿建筑的杰出代表。",
+  "confidence": 0.92,
+  "components": {
+    "dougongType": "重昂七铺作",
+    "beastCount": 10,
+    "beastTypes": ["龙", "凤", "狮", "天马", "海马"],
+    "paintingPattern": "和玺彩画",
+    "roofType": "重檐庑殿顶",
+    "confidence": 0.88
+  },
+  "fusion": {
+    "imageCount": 4,
+    "consistency": 0.89,
+    "crossViewSummary": "多视角特征一致，结论稳定"
+  },
+  "gis": {
+    "placeName": "北京",
+    "lat": 39.9042,
+    "lng": 116.4074,
+    "dynastyContext": "该建筑处于明清行政体系与礼制空间高度成熟阶段",
+    "territoryLevel": "都城核心",
+    "timeline": [
+      {
+        "period": "唐宋时期",
+        "territoryContext": "区域政区与城镇网络逐步稳定",
+        "locationRole": "北京形成重要城市节点"
+      },
+      {
+        "period": "元代",
+        "territoryContext": "跨区域治理体系强化",
+        "locationRole": "北京在交通与行政体系中地位提升"
+      },
+      {
+        "period": "明清时期",
+        "territoryContext": "礼制与行政空间定型",
+        "locationRole": "北京成为传统建筑存量集中区"
+      }
+    ]
+  }
+}
