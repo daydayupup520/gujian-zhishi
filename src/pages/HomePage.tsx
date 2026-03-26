@@ -6,6 +6,7 @@ import { GlassRecognitionResult } from '../components/GlassRecognitionResult';
 import { Scene3D } from '../components/Scene3D';
 import { LoadingAnimation } from '../components/LoadingAnimation';
 import { recognizeBuildingMulti, fileToBase64Many } from '../lib/ai/recognition';
+import { recognizeBuildingLocalMulti, loadLocalRecognitionModel } from '../lib/ai/localRecognition';
 import { useAppContext } from '../contexts/AppContext';
 import { useRecognitionHistory } from '../hooks/useDatabase';
 import { Link } from 'react-router-dom';
@@ -17,6 +18,7 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+  const [aiMode, setAIMode] = useState<'cloud' | 'local'>('cloud');
 
   const handleImageUpload = useCallback(async (files: File[], previews: string[]) => {
     void previews;
@@ -26,9 +28,12 @@ export default function HomePage() {
     try {
       let recognitionResult: RecognitionResult | undefined;
 
-      // 直接调用真实 API（API key 已在 recognition.ts 中配置）
-      const base64List = await fileToBase64Many(files);
-      recognitionResult = await recognizeBuildingMulti(base64List);
+      if (aiMode === 'local') {
+        recognitionResult = await recognizeBuildingLocalMulti(files);
+      } else {
+        const base64List = await fileToBase64Many(files);
+        recognitionResult = await recognizeBuildingMulti(base64List);
+      }
 
       setGlobalResult(recognitionResult);
       await addToHistory(recognitionResult, files.length);
@@ -38,7 +43,18 @@ export default function HomePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [setGlobalResult, addToHistory]);
+  }, [aiMode, setGlobalResult, addToHistory]);
+
+  const handleAIModeChange = useCallback((mode: 'cloud' | 'local') => {
+    setAIMode(mode);
+    setError(null);
+
+    if (mode === 'local') {
+      void loadLocalRecognitionModel().catch((err) => {
+        console.error('本地模型加载失败:', err);
+      });
+    }
+  }, []);
 
   return (
     <div className="min-h-screen page-container">
@@ -237,7 +253,12 @@ export default function HomePage() {
                     <p className="text-sm text-slate-500">支持多角度 JPG、PNG</p>
                   </div>
                 </div>
-                <GlassImageUploader onImageUpload={handleImageUpload} isLoading={isLoading} />
+                <GlassImageUploader
+                  onImageUpload={handleImageUpload}
+                  isLoading={isLoading}
+                  aiMode={aiMode}
+                  onAIModeChange={handleAIModeChange}
+                />
               </div>
 
               <div className="mt-6">
