@@ -159,11 +159,39 @@ test.describe('buildPresentationReport', () => {
       description: '测试描述',
       confidence: 0.70,
     };
-    
+
     const report = buildPresentationReport(minimalFixture);
-    
+
     // Should still work with minimal data
     expect(report.evidenceBullets.length).toBeGreaterThanOrEqual(1);
     expect(report.nextShots.length).toBeGreaterThanOrEqual(3);
+  });
+
+  // Guardrail tests
+  test('should NOT include location uncertainty when location is specific (e.g., 北京)', () => {
+    const report = buildPresentationReport(fixture);
+
+    // fixture.location is '北京', should NOT trigger location uncertainty
+    const hasLocationUncertainty = report.uncertainties.some(u =>
+      u.includes('地理定位不确定')
+    );
+    expect(hasLocationUncertainty).toBe(false);
+  });
+
+  test('should use confidence as consistency and specific verdict when fusion is missing', () => {
+    const fixtureWithoutFusion: RecognitionResult = {
+      ...fixture,
+      fusion: undefined,
+      confidence: 0.75,
+    };
+
+    const report = buildPresentationReport(fixtureWithoutFusion);
+
+    // When fusion is missing, imageCount must be 1
+    expect(report.crossView.imageCount).toBe(1);
+    // consistency must equal confidence (clamped 0..1)
+    expect(report.crossView.consistency).toBe(0.75);
+    // verdict must be the exact specified string
+    expect(report.crossView.verdict).toBe('未提供多视角融合一致性指标，当前为单视角研判。');
   });
 });

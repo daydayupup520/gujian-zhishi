@@ -100,20 +100,50 @@ function buildEvidenceBullets(result: RecognitionResult): string[] {
     }
   }
   
+  // 保证至少3条证据（使用必填字段作为 fallback）
+  const fallbackBullets: string[] = [];
+  if (bullets.length < 3) {
+    const bullet1 = `识别对象：${result.name}`;
+    if (!bullets.includes(bullet1)) {
+      fallbackBullets.push(bullet1);
+    }
+  }
+  if (bullets.length + fallbackBullets.length < 3) {
+    const bullet2 = `类别与时代：${result.category}｜${result.era} · ${result.year}`;
+    if (!bullets.includes(bullet2) && !fallbackBullets.includes(bullet2)) {
+      fallbackBullets.push(bullet2);
+    }
+  }
+  if (bullets.length + fallbackBullets.length < 3) {
+    const bullet3 = `地点：${result.location}`;
+    if (!bullets.includes(bullet3) && !fallbackBullets.includes(bullet3)) {
+      fallbackBullets.push(bullet3);
+    }
+  }
+
+  const allBullets = [...bullets, ...fallbackBullets];
+
   // 限制最多8条
-  return bullets.slice(0, 8);
+  return allBullets.slice(0, 8);
 }
 
 /**
  * 生成多视角一致性结论
  */
 function buildCrossView(result: RecognitionResult): PresentationReport['crossView'] {
-  const imageCount = result.fusion?.imageCount ?? 1;
-  const consistency = result.fusion?.consistency ?? (imageCount > 1 ? 0.78 : 0.65);
-  
+  // 如果 fusion 存在，使用 fusion 的数据；否则使用单视角默认值
+  const hasFusion = result.fusion !== undefined;
+  const imageCount = hasFusion ? result.fusion!.imageCount : 1;
+  const consistency = hasFusion
+    ? result.fusion!.consistency
+    : Math.max(0, Math.min(1, result.confidence));
+
   let verdict: string;
-  
-  if (imageCount >= 2) {
+
+  if (!hasFusion) {
+    // 未提供多视角融合数据时的专用 verdict
+    verdict = '未提供多视角融合一致性指标，当前为单视角研判。';
+  } else if (imageCount >= 2) {
     if (consistency >= 0.85) {
       verdict = '多视角一致性高，结论稳定。';
     } else if (consistency >= 0.70) {
@@ -124,7 +154,7 @@ function buildCrossView(result: RecognitionResult): PresentationReport['crossVie
   } else {
     verdict = '单视角输入，建议补充侧立面与檐口细部以提升稳定性。';
   }
-  
+
   return {
     imageCount,
     consistency,
@@ -154,9 +184,10 @@ function buildUncertainties(result: RecognitionResult, band: ConfidenceBand): st
     uncertainties.push('部件级细节不确定：斗拱/脊兽/彩画需近景确认。');
   }
   
-  // 地理定位不确定
-  const uncertainLocations = ['未知', '待定位', '中国', '未提供', ''];
-  if (uncertainLocations.some(loc => result.location.includes(loc))) {
+  // 地理定位不确定（使用标准化相等判断，避免 always-true）
+  const uncertainLocations = ['未知', '待定位', '中国', '未提供'];
+  const normalizedLocation = result.location.trim();
+  if (uncertainLocations.includes(normalizedLocation)) {
     uncertainties.push('地理定位不确定：建议补拍环境信息或铭牌。');
   }
   
@@ -215,13 +246,16 @@ function buildNextShots(result: RecognitionResult): string[] {
     nextShots.push('侧立面（看屋顶起翘、檐口与山墙）');
   }
   
-  // 补充剩余的默认建议（去重）
-  const remainingDefaults = DEFAULT_NEXT_SHOTS.filter(
-    shot => !nextShots.some(existing => existing.includes(shot.substring(0, 6)))
-  );
-  
-  nextShots.push(...remainingDefaults);
-  
+  // 补充剩余的默认建议（使用精确匹配去重，保留顺序）
+  const seen = new Set(nextShots);
+  for (const shot of DEFAULT_NEXT_SHOTS) {
+    if (!seen.has(shot)) {
+      nextShots.push(shot);
+      seen.add(shot);
+    }
+    if (nextShots.length >= 8) break;
+  }
+
   // 确保至少3条，最多8条
   return nextShots.slice(0, 8);
 }
