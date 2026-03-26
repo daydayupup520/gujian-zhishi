@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Building, BookOpen, ArrowRight, History } from 'lucide-react';
 import { GlassImageUploader } from '../components/GlassImageUploader';
@@ -8,14 +8,19 @@ import { LoadingAnimation } from '../components/LoadingAnimation';
 import { recognizeBuildingMulti, fileToBase64Many } from '../lib/ai/recognition';
 import { useAppContext } from '../contexts/AppContext';
 import { useRecognitionHistory } from '../hooks/useDatabase';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function HomePage() {
+  const { search } = useLocation();
   const { recognitionResult: result, setRecognitionResult: setGlobalResult } = useAppContext();
   const { addToHistory, history } = useRecognitionHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+
+  const presentationMode = useMemo(() => {
+    return new URLSearchParams(search).get('presentation') === '1';
+  }, [search]);
 
   const handleImageUpload = useCallback(async (files: File[], previews: string[]) => {
     void previews;
@@ -240,7 +245,7 @@ export default function HomePage() {
               </div>
 
               <div className="mt-6">
-                <GlassRecognitionResult result={result} isLoading={isLoading} />
+                <GlassRecognitionResult result={result} isLoading={isLoading} presentationMode={presentationMode} />
               </div>
             </motion.div>
 

@@ -2,15 +2,18 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Building, Calendar, MapPin, Star, CheckCircle, Sparkles, Layers, Compass } from 'lucide-react';
 import type { RecognitionResult } from '../types/ai';
+import { buildPresentationReport } from '../lib/ai/presentationReport';
 
 interface GlassRecognitionResultProps {
   result: RecognitionResult | null;
   isLoading?: boolean;
+  presentationMode?: boolean;
 }
 
 export const GlassRecognitionResult: React.FC<GlassRecognitionResultProps> = ({
   result,
   isLoading = false,
+  presentationMode = false,
 }) => {
   if (isLoading) {
     return (
@@ -46,6 +49,8 @@ export const GlassRecognitionResult: React.FC<GlassRecognitionResultProps> = ({
       </motion.div>
     );
   }
+
+  const report = presentationMode ? buildPresentationReport(result) : null;
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -115,6 +120,75 @@ export const GlassRecognitionResult: React.FC<GlassRecognitionResultProps> = ({
           <span className="font-bold text-[#7a5a1f]">{(result.confidence * 100).toFixed(0)}%</span>
         </motion.div>
       </div>
+
+      {presentationMode && report && (
+        <motion.div
+          data-testid="presentation-report"
+          className="mb-6 p-4 bg-amber-500/10 border border-amber-400/30 rounded-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.25 }}
+        >
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <h4 className="text-sm font-medium text-amber-200 flex items-center gap-2">
+              <Sparkles size={14} className="text-amber-300" />
+              研判报告
+            </h4>
+            <span className="text-xs text-slate-400">
+              {report.crossView.imageCount} 张图 · 一致性 {Math.round(report.crossView.consistency * 100)}%
+            </span>
+          </div>
+
+          <p
+            data-testid="presentation-headline"
+            className="mt-2 text-sm text-white font-medium"
+          >
+            {report.headline}
+          </p>
+
+          <p className="mt-1 text-xs text-slate-400">
+            {report.crossView.verdict}
+          </p>
+
+          <div className="mt-4">
+            <p className="text-xs text-slate-400 mb-2">证据要点</p>
+            <ul data-testid="presentation-evidence" className="space-y-1 text-sm text-slate-200">
+              {report.evidenceBullets.map((bullet) => (
+                <li key={bullet} className="flex gap-2">
+                  <span className="text-cyan-300">•</span>
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {report.uncertainties.length > 0 && (
+            <div className="mt-4">
+              <p className="text-xs text-slate-400 mb-2">不确定性说明</p>
+              <ul className="space-y-1 text-sm text-slate-200">
+                {report.uncertainties.map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="text-rose-300">•</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="mt-4">
+            <p className="text-xs text-slate-400 mb-2">建议补拍角度</p>
+            <ul data-testid="presentation-nextshots" className="space-y-1 text-sm text-slate-200">
+              {report.nextShots.map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="text-emerald-300">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-2 gap-4 mb-6">
         <motion.div
