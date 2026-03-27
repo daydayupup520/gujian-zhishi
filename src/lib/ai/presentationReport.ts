@@ -227,7 +227,7 @@ function buildNextShots(result: RecognitionResult): string[] {
     if (!components.paintingPattern || components.paintingPattern === '待确认') {
       missingComponents.push('painting');
     }
-    if (components.beastCount === 0 || components.beastTypes.length === 0) {
+    if (components.beastCount === 0 || !components.beastTypes?.length) {
       missingComponents.push('beast');
     }
   }
