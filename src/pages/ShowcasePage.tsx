@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Building2, MapPin, Calendar, Search, Filter } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
-// 建筑数据 - 使用可靠的在线图片URL
+// 建筑数据 - 使用本地图片
 const BUILDINGS = [
   {
     id: 'chengqi-tulou',
@@ -14,7 +14,7 @@ const BUILDINGS = [
     year: '1709',
     location: '福建省龙岩市永定区',
     description: '永定土楼代表作之一，外圈高大夯土墙形成防御性围合，内设多层木构廊道与院落空间。',
-    image: 'https://images.unsplash.com/photo-1540791686026-0f0a20390f17?w=800&q=80',
+    image: '/images/chengqi-tulou.jpg',
     features: ['夯土承重墙', '环形围合', '多层合院']
   },
   {
@@ -26,7 +26,7 @@ const BUILDINGS = [
     year: '明清形制',
     location: '北京市',
     description: '以四面房屋围合成院为基本单元，讲究礼制轴线与居住秩序，是北方传统民居的典型形态。',
-    image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=800&q=80',
+    image: '/images/beijing-siheyuan.jpg',
     features: ['院落式布局', '中轴对称', '坐北朝南']
   },
   {
@@ -38,7 +38,7 @@ const BUILDINGS = [
     year: '1420',
     location: '北京市东城区',
     description: '紫禁城的核心建筑，重檐庑殿顶，是中国现存最大的木结构大殿。',
-    image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80',
+    image: '/images/forbidden-city-taihe.jpg',
     features: ['重檐庑殿顶', '金丝楠木柱', '和玺彩画']
   },
   {
@@ -50,7 +50,7 @@ const BUILDINGS = [
     year: '605',
     location: '河北省赵县',
     description: '世界现存最古老、保存最完整的单孔敞肩石拱桥，李春设计建造。',
-    image: 'https://images.unsplash.com/photo-1533552089222-1d582846d5c5?w=800&q=80',
+    image: '/images/zhaozhou-bridge.jpg',
     features: ['单孔敞肩拱', '世界最古老石拱桥']
   },
   {
@@ -62,7 +62,7 @@ const BUILDINGS = [
     year: '1730',
     location: '河北省保定市',
     description: '清代直隶总督办公处所，是中国保存最完整的清代省级衙署。',
-    image: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=80',
+    image: '/images/zhili-zongdushu.jpg',
     features: ['衙署建筑', '中轴对称', '五进院落']
   },
   {
@@ -74,7 +74,7 @@ const BUILDINGS = [
     year: '明清时期',
     location: '安徽省黟县',
     description: '徽派建筑典型代表，以水为脉，马头墙错落有致，木雕砖雕精美。',
-    image: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=800&q=80',
+    image: '/images/hongcun-residence.jpg',
     features: ['徽派建筑', '马头墙', '三雕艺术']
   },
   {
@@ -86,7 +86,7 @@ const BUILDINGS = [
     year: '1192',
     location: '北京市丰台区',
     description: '北京现存最古老的石造联拱桥，以石狮雕刻闻名，马可·波罗称之为"世界上最好的桥"。',
-    image: 'https://images.unsplash.com/photo-1548919973-5cef591cdbc9?w=800&q=80',
+    image: '/images/lugou-bridge.jpg',
     features: ['联拱石桥', '石狮雕刻', '马可·波罗赞誉']
   },
   {
@@ -98,7 +98,7 @@ const BUILDINGS = [
     year: '1777',
     location: '北京市西城区',
     description: '清代规模最大的一座王府，曾是和珅、永璘的宅邸，后成为恭亲王奕訢的府邸。',
-    image: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80',
+    image: '/images/prince-gong-mansion.jpg',
     features: ['王府建筑', '花园艺术', '锡晋斋']
   }
 ];
