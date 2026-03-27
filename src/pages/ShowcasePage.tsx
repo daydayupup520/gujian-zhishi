@@ -195,17 +195,53 @@ export default function ShowcasePage() {
               className="group bg-[rgba(15,20,40,0.6)] backdrop-blur-xl border border-indigo-500/10 rounded-3xl overflow-hidden hover:border-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
             >
               {/* 图片区域 */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-indigo-900/30 via-blue-900/20 to-slate-900/30 relative overflow-hidden">
+              <div className={`aspect-[4/3] relative overflow-hidden ${
+                building.category === '皇宫' ? 'bg-gradient-to-br from-amber-900/40 via-yellow-900/30 to-orange-900/40' :
+                building.category === '官府' ? 'bg-gradient-to-br from-blue-900/40 via-indigo-900/30 to-slate-900/40' :
+                building.category === '桥梁' ? 'bg-gradient-to-br from-cyan-900/40 via-teal-900/30 to-blue-900/40' :
+                'bg-gradient-to-br from-emerald-900/40 via-green-900/30 to-teal-900/40'
+              }`}>
+                {/* 背景图案 */}
+                <div className="absolute inset-0 opacity-20">
+                  <div className="absolute inset-0" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  }} />
+                </div>
+                
+                {/* 建筑图标 */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                    <Building2 className="w-12 h-12 text-blue-400/40" />
+                  <div className={`w-28 h-28 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 ${
+                    building.category === '皇宫' ? 'bg-gradient-to-br from-amber-500/30 to-yellow-500/30 shadow-lg shadow-amber-500/20' :
+                    building.category === '官府' ? 'bg-gradient-to-br from-blue-500/30 to-indigo-500/30 shadow-lg shadow-blue-500/20' :
+                    building.category === '桥梁' ? 'bg-gradient-to-br from-cyan-500/30 to-teal-500/30 shadow-lg shadow-cyan-500/20' :
+                    'bg-gradient-to-br from-emerald-500/30 to-green-500/30 shadow-lg shadow-emerald-500/20'
+                  }`}>
+                    <span className="text-5xl font-bold text-white/60">
+                      {building.name.charAt(0)}
+                    </span>
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,26,0.9)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                {/* 底部渐变遮罩 */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,26,0.95)] via-[rgba(10,10,26,0.3)] to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                
+                {/* 分类标签 */}
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1.5 bg-[rgba(15,20,40,0.8)] backdrop-blur-sm text-blue-300 rounded-full text-xs font-semibold shadow-sm border border-blue-500/20">
+                  <span className={`px-3 py-1.5 backdrop-blur-sm rounded-full text-xs font-semibold shadow-sm border ${
+                    building.category === '皇宫' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                    building.category === '官府' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+                    building.category === '桥梁' ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' :
+                    'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                  }`}>
                     {building.category}
                   </span>
+                </div>
+                
+                {/* 悬浮显示的朝代 */}
+                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white/90 text-sm font-medium">
+                    {building.era}代建筑 · {building.year}
+                  </p>
                 </div>
               </div>
 
