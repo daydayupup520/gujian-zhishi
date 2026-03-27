@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Building2, MapPin, Calendar, Search, Filter } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
-// 建筑数据
+// 建筑数据 - 使用可靠的在线图片URL
 const BUILDINGS = [
   {
     id: 'chengqi-tulou',
@@ -14,7 +14,7 @@ const BUILDINGS = [
     year: '1709',
     location: '福建省龙岩市永定区',
     description: '永定土楼代表作之一，外圈高大夯土墙形成防御性围合，内设多层木构廊道与院落空间。',
-    image: '/data/images/chengqi-tulou.jpg',
+    image: 'https://images.unsplash.com/photo-1540791686026-0f0a20390f17?w=800&q=80',
     features: ['夯土承重墙', '环形围合', '多层合院']
   },
   {
@@ -26,7 +26,7 @@ const BUILDINGS = [
     year: '明清形制',
     location: '北京市',
     description: '以四面房屋围合成院为基本单元，讲究礼制轴线与居住秩序，是北方传统民居的典型形态。',
-    image: '/data/images/beijing-siheyuan.jpg',
+    image: 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=800&q=80',
     features: ['院落式布局', '中轴对称', '坐北朝南']
   },
   {
@@ -38,7 +38,7 @@ const BUILDINGS = [
     year: '1420',
     location: '北京市东城区',
     description: '紫禁城的核心建筑，重檐庑殿顶，是中国现存最大的木结构大殿。',
-    image: '/data/images/forbidden-city-taihe.jpg',
+    image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80',
     features: ['重檐庑殿顶', '金丝楠木柱', '和玺彩画']
   },
   {
@@ -50,7 +50,7 @@ const BUILDINGS = [
     year: '605',
     location: '河北省赵县',
     description: '世界现存最古老、保存最完整的单孔敞肩石拱桥，李春设计建造。',
-    image: '/data/images/zhaozhou-bridge.jpg',
+    image: 'https://images.unsplash.com/photo-1533552089222-1d582846d5c5?w=800&q=80',
     features: ['单孔敞肩拱', '世界最古老石拱桥']
   },
   {
@@ -62,7 +62,7 @@ const BUILDINGS = [
     year: '1730',
     location: '河北省保定市',
     description: '清代直隶总督办公处所，是中国保存最完整的清代省级衙署。',
-    image: '/data/images/zhili-zongdushu.jpg',
+    image: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=80',
     features: ['衙署建筑', '中轴对称', '五进院落']
   },
   {
@@ -74,7 +74,7 @@ const BUILDINGS = [
     year: '明清时期',
     location: '安徽省黟县',
     description: '徽派建筑典型代表，以水为脉，马头墙错落有致，木雕砖雕精美。',
-    image: '/data/images/hongcun-residence.jpg',
+    image: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=800&q=80',
     features: ['徽派建筑', '马头墙', '三雕艺术']
   },
   {
@@ -86,7 +86,7 @@ const BUILDINGS = [
     year: '1192',
     location: '北京市丰台区',
     description: '北京现存最古老的石造联拱桥，以石狮雕刻闻名，马可·波罗称之为"世界上最好的桥"。',
-    image: '/data/images/lugou-bridge.jpg',
+    image: 'https://images.unsplash.com/photo-1548919973-5cef591cdbc9?w=800&q=80',
     features: ['联拱石桥', '石狮雕刻', '马可·波罗赞誉']
   },
   {
@@ -98,12 +98,127 @@ const BUILDINGS = [
     year: '1777',
     location: '北京市西城区',
     description: '清代规模最大的一座王府，曾是和珅、永璘的宅邸，后成为恭亲王奕訢的府邸。',
-    image: '/data/images/prince-gong-mansion.jpg',
+    image: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80',
     features: ['王府建筑', '花园艺术', '锡晋斋']
   }
 ];
 
 const CATEGORIES = ['全部', '民居', '官府', '皇宫', '桥梁'];
+
+// 建筑卡片组件
+function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; index: number }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      className="group bg-[rgba(15,20,40,0.6)] backdrop-blur-xl border border-indigo-500/10 rounded-3xl overflow-hidden hover:border-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
+    >
+      {/* 图片区域 */}
+      <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900">
+        {/* 真实图片 */}
+        {!imageError && (
+          <img
+            src={building.image}
+            alt={building.name}
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
+              imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+            } group-hover:scale-110`}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageError(true)}
+          />
+        )}
+        
+        {/* 加载占位 */}
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
+          </div>
+        )}
+        
+        {/* 错误fallback */}
+        {imageError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-900/40 via-blue-900/30 to-slate-900/40">
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center ${
+              building.category === '皇宫' ? 'bg-amber-500/20' :
+              building.category === '官府' ? 'bg-blue-500/20' :
+              building.category === '桥梁' ? 'bg-cyan-500/20' :
+              'bg-emerald-500/20'
+            }`}>
+              <span className="text-4xl font-bold text-white/60">
+                {building.name.charAt(0)}
+              </span>
+            </div>
+          </div>
+        )}
+        
+        {/* 底部渐变遮罩 */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,26,0.95)] via-transparent to-transparent opacity-60" />
+        
+        {/* 分类标签 */}
+        <div className="absolute top-4 left-4">
+          <span className={`px-3 py-1.5 backdrop-blur-sm rounded-full text-xs font-semibold shadow-sm border ${
+            building.category === '皇宫' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+            building.category === '官府' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+            building.category === '桥梁' ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' :
+            'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+          }`}>
+            {building.category}
+          </span>
+        </div>
+        
+        {/* 悬浮显示的朝代 */}
+        <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <p className="text-white/90 text-sm font-medium">
+            {building.era}代建筑 · {building.year}
+          </p>
+        </div>
+      </div>
+
+      {/* 内容区域 */}
+      <div className="p-5">
+        <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors duration-300">
+          {building.name}
+        </h3>
+        <p className="text-xs text-slate-500 mb-3">{building.fullName}</p>
+
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+            <div className="w-6 h-6 rounded-lg bg-indigo-500/15 flex items-center justify-center">
+              <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+            </div>
+            <span>{building.era}（{building.year}）</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-slate-400">
+            <div className="w-6 h-6 rounded-lg bg-blue-500/15 flex items-center justify-center">
+              <MapPin className="w-3.5 h-3.5 text-blue-400" />
+            </div>
+            <span className="line-clamp-1">{building.location}</span>
+          </div>
+        </div>
+
+        <p className="text-slate-500 text-sm line-clamp-2 mb-4 leading-relaxed">
+          {building.description}
+        </p>
+
+        <div className="flex flex-wrap gap-1.5">
+          {building.features.slice(0, 2).map((feature) => (
+            <span
+              key={`${building.id}-${feature}`}
+              className="px-2.5 py-1 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 text-blue-300 rounded-full text-xs font-medium border border-blue-500/15"
+            >
+              {feature}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function ShowcasePage() {
   const [selectedCategory, setSelectedCategory] = useState('全部');
@@ -186,103 +301,7 @@ export default function ShowcasePage() {
         {/* 建筑网格 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredBuildings.map((building, index) => (
-            <motion.div
-              key={building.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.08, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="group bg-[rgba(15,20,40,0.6)] backdrop-blur-xl border border-indigo-500/10 rounded-3xl overflow-hidden hover:border-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
-            >
-              {/* 图片区域 */}
-              <div className={`aspect-[4/3] relative overflow-hidden ${
-                building.category === '皇宫' ? 'bg-gradient-to-br from-amber-900/40 via-yellow-900/30 to-orange-900/40' :
-                building.category === '官府' ? 'bg-gradient-to-br from-blue-900/40 via-indigo-900/30 to-slate-900/40' :
-                building.category === '桥梁' ? 'bg-gradient-to-br from-cyan-900/40 via-teal-900/30 to-blue-900/40' :
-                'bg-gradient-to-br from-emerald-900/40 via-green-900/30 to-teal-900/40'
-              }`}>
-                {/* 背景图案 */}
-                <div className="absolute inset-0 opacity-20">
-                  <div className="absolute inset-0" style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                  }} />
-                </div>
-                
-                {/* 建筑图标 */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`w-28 h-28 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 ${
-                    building.category === '皇宫' ? 'bg-gradient-to-br from-amber-500/30 to-yellow-500/30 shadow-lg shadow-amber-500/20' :
-                    building.category === '官府' ? 'bg-gradient-to-br from-blue-500/30 to-indigo-500/30 shadow-lg shadow-blue-500/20' :
-                    building.category === '桥梁' ? 'bg-gradient-to-br from-cyan-500/30 to-teal-500/30 shadow-lg shadow-cyan-500/20' :
-                    'bg-gradient-to-br from-emerald-500/30 to-green-500/30 shadow-lg shadow-emerald-500/20'
-                  }`}>
-                    <span className="text-5xl font-bold text-white/60">
-                      {building.name.charAt(0)}
-                    </span>
-                  </div>
-                </div>
-                
-                {/* 底部渐变遮罩 */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,26,0.95)] via-[rgba(10,10,26,0.3)] to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                
-                {/* 分类标签 */}
-                <div className="absolute top-4 left-4">
-                  <span className={`px-3 py-1.5 backdrop-blur-sm rounded-full text-xs font-semibold shadow-sm border ${
-                    building.category === '皇宫' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
-                    building.category === '官府' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
-                    building.category === '桥梁' ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' :
-                    'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                  }`}>
-                    {building.category}
-                  </span>
-                </div>
-                
-                {/* 悬浮显示的朝代 */}
-                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="text-white/90 text-sm font-medium">
-                    {building.era}代建筑 · {building.year}
-                  </p>
-                </div>
-              </div>
-
-              {/* 内容区域 */}
-              <div className="p-5">
-                <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors duration-300">
-                  {building.name}
-                </h3>
-                <p className="text-xs text-slate-500 mb-3">{building.fullName}</p>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-sm text-slate-400">
-                    <div className="w-6 h-6 rounded-lg bg-indigo-500/15 flex items-center justify-center">
-                      <Calendar className="w-3.5 h-3.5 text-indigo-400" />
-                    </div>
-                    <span>{building.era}（{building.year}）</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-400">
-                    <div className="w-6 h-6 rounded-lg bg-blue-500/15 flex items-center justify-center">
-                      <MapPin className="w-3.5 h-3.5 text-blue-400" />
-                    </div>
-                    <span className="line-clamp-1">{building.location}</span>
-                  </div>
-                </div>
-
-                <p className="text-slate-500 text-sm line-clamp-2 mb-4 leading-relaxed">
-                  {building.description}
-                </p>
-
-                <div className="flex flex-wrap gap-1.5">
-                  {building.features.slice(0, 2).map((feature) => (
-                    <span
-                      key={`${building.id}-${feature}`}
-                      className="px-2.5 py-1 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 text-blue-300 rounded-full text-xs font-medium border border-blue-500/15"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+            <BuildingCard key={building.id} building={building} index={index} />
           ))}
         </div>
 
