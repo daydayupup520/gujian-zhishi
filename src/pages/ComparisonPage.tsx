@@ -1,169 +1,399 @@
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
-  ArrowLeft, GitCompare, Building2, Calendar, MapPin, 
-  Layers, Compass, Shield, History, Image as ImageIcon,
-  Ruler
+  ArrowLeft, GitCompare, Building2, AlertTriangle, Clock,
+  TrendingUp, TrendingDown, Minus, FileText, Download,
+  Activity, Shield, AlertCircle, CheckCircle2, BarChart3,
+  Calendar, MapPin, History, Search
 } from 'lucide-react';
 import { useRecognitionHistory } from '../hooks/useDatabase';
-import type { RecognitionResult } from '../types/ai';
+import { diseaseRecordsDB } from '../lib/db';
+import type { DiseaseRecord } from '../lib/db';
 
-interface BuildingWithDetails {
+import {
+  calculateDiseaseSimilarity,
+  generateTimelineComparison,
+  generateComparisonReport,
+  type TimelineComparisonPoint,
+  type DiseaseComparisonReport,
+} from '../types/diseaseComparison';
+
+// 建筑基础信息（用于展示）
+interface BuildingInfo {
   id: string;
   name: string;
-  fullName: string;
   category: string;
   era: string;
-  year: string;
   location: string;
-  description: string;
-  features: string[];
-  image?: string;
-  // 详细对比维度
-  components: RecognitionResult['components'];
-  fusion: RecognitionResult['fusion'];
-  gis: RecognitionResult['gis'];
-  confidence: number;
-  recordedAt?: string;
 }
 
-// 从识别结果转换为对比数据
-function convertToBuildingData(historyItem: { id?: number; result: RecognitionResult; timestamp: number }): BuildingWithDetails {
-  return {
-    id: `history-${historyItem.id}`,
-    name: historyItem.result.name,
-    fullName: `${historyItem.result.name}（${historyItem.result.category}）`,
-    category: historyItem.result.category,
-    era: historyItem.result.era,
-    year: historyItem.result.year,
-    location: historyItem.result.location,
-    description: historyItem.result.description,
-    features: historyItem.result.features,
-    components: historyItem.result.components,
-    fusion: historyItem.result.fusion,
-    gis: historyItem.result.gis,
-    confidence: historyItem.result.confidence,
-    recordedAt: new Date(historyItem.timestamp).toISOString(),
-  };
+// 对比模式
+type ComparisonMode = 'temporal' | 'spatial';
+
+// 从识别历史获取建筑列表
+function useBuildingList() {
+  const { history } = useRecognitionHistory();
+  
+  return useMemo(() => {
+    const buildings = new Map<string, BuildingInfo>();
+    
+    history.forEach(item => {
+      const buildingId = `building-${item.id}`;
+      if (!buildings.has(buildingId)) {
+        buildings.set(buildingId, {
+          id: buildingId,
+          name: item.result.name,
+          category: item.result.category,
+          era: item.result.era,
+          location: item.result.location,
+        });
+      }
+    });
+    
+    // 添加示例建筑
+    buildings.set('demo-taihe', {
+      id: 'demo-taihe',
+      name: '故宫太和殿',
+      category: '皇宫',
+      era: '明',
+      location: '北京',
+    });
+    buildings.set('demo-yamen', {
+      id: 'demo-yamen',
+      name: '内乡县衙',
+      category: '官府',
+      era: '清',
+      location: '河南',
+    });
+    buildings.set('demo-tulou', {
+      id: 'demo-tulou',
+      name: '承启楼',
+      category: '民居',
+      era: '清',
+      location: '福建',
+    });
+    
+    return Array.from(buildings.values());
+  }, [history]);
 }
 
-// 默认示例建筑（当没有历史记录时显示）
-const DEFAULT_BUILDINGS: BuildingWithDetails[] = [
-  {
-    id: 'default-taihe',
-    name: '故宫太和殿',
-    fullName: '故宫太和殿（皇宫）',
-    category: '皇宫',
-    era: '明',
-    year: '1420',
-    location: '北京市东城区',
-    description: '紫禁城核心建筑，中国现存最大木结构大殿',
-    features: ['重檐庑殿顶', '和玺彩画', '金丝楠木柱'],
-    components: {
-      dougongType: '七踩重昂斗拱',
-      beastCount: 10,
-      beastTypes: ['龙', '凤', '狮', '天马', '海马', '狻猊', '押鱼', '獬豸', '斗牛', '行什'],
-      paintingPattern: '和玺彩画',
-      roofType: '重檐庑殿顶',
-      confidence: 0.95,
-    },
-    fusion: { imageCount: 4, consistency: 0.92, crossViewSummary: '多角度确认' },
-    gis: {
-      placeName: '北京',
-      lat: 39.9042,
-      lng: 116.4074,
-      dynastyContext: '明清都城核心',
-      territoryLevel: '都城核心',
-      timeline: [
-        { period: '明永乐', territoryContext: '都城建设', locationRole: '皇宫核心' },
-        { period: '明清', territoryContext: '帝国中心', locationRole: '政治中心' },
-      ],
-    },
-    confidence: 0.92,
-  },
-  {
-    id: 'default-tulou',
-    name: '承启楼',
-    fullName: '承启楼（福建土楼）',
-    category: '民居',
-    era: '清',
-    year: '1709',
-    location: '福建省龙岩市永定区',
-    description: '永定土楼代表作，外圈夯土墙防御性围合',
-    features: ['夯土承重墙', '环形围合', '多层合院'],
-    components: {
-      dougongType: '土楼简易斗拱',
-      beastCount: 0,
-      beastTypes: [],
-      paintingPattern: '民间彩绘',
-      roofType: '悬山顶',
-      confidence: 0.85,
-    },
-    fusion: { imageCount: 3, consistency: 0.88, crossViewSummary: '三视角融合' },
-    gis: {
-      placeName: '福建永定',
-      lat: 24.68,
-      lng: 116.73,
-      dynastyContext: '客家文化区',
-      territoryLevel: '地方民居',
-      timeline: [
-        { period: '清康熙', territoryContext: '客家移民', locationRole: '宗族聚居' },
-        { period: '清代', territoryContext: '山区开发', locationRole: '防御性民居' },
-      ],
-    },
-    confidence: 0.85,
-  },
-];
-
-// 获取类别样式
-const getCategoryStyle = (category: string) => {
-  switch (category) {
-    case '皇宫':
-      return 'bg-amber-500/20 text-amber-300 border-amber-500/30';
-    case '官府':
-      return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
-    case '桥梁':
-      return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30';
-    default:
-      return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+// 获取建筑的所有病害记录（模拟数据）
+async function getBuildingDiseaseRecords(buildingId: string): Promise<DiseaseRecord[]> {
+  // 如果是真实建筑ID，从数据库获取
+  if (!buildingId.startsWith('demo-')) {
+    const realId = buildingId.replace('building-', '');
+    return await diseaseRecordsDB.getByBuilding(realId);
   }
-};
+  
+  // 返回演示数据
+  return generateDemoDiseaseRecords(buildingId);
+}
 
-// 对比维度配置
-const COMPARISON_DIMENSIONS = [
-  { key: 'basic', label: '基本信息', icon: Building2 },
-  { key: 'components', label: '构件细部', icon: Layers },
-  { key: 'structure', label: '形制规模', icon: Ruler },
-  { key: 'gis', label: '地理信息', icon: Compass },
-  { key: 'confidence', label: '识别置信度', icon: Shield },
-];
+// 生成演示病害数据
+function generateDemoDiseaseRecords(buildingId: string): DiseaseRecord[] {
+  const now = Date.now();
+  const day = 24 * 60 * 60 * 1000;
+  
+  const demoData: Record<string, DiseaseRecord[]> = {
+    'demo-taihe': [
+      {
+        id: 1,
+        buildingId: 'demo-taihe',
+        buildingName: '故宫太和殿',
+        diseaseType: '裂缝',
+        severity: '中度',
+        position: '墙体基部',
+        description: '东西向贯穿裂缝，长度约1.2米，宽度3-5mm',
+        recommendation: '清理裂缝后注入环氧树脂，表面做压力灌浆处理',
+        estimatedCost: '2-3万元',
+        urgency: '近期处理',
+        recordedAt: now - 30 * day,
+        status: 'pending',
+      },
+      {
+        id: 2,
+        buildingId: 'demo-taihe',
+        buildingName: '故宫太和殿',
+        diseaseType: '风化',
+        severity: '轻微',
+        position: '台基石材',
+        description: '石材表面出现粉化现象，局部有剥落',
+        recommendation: '表面清洗后喷涂石材防护剂，定期监测',
+        estimatedCost: '0.5-1万元',
+        urgency: '定期监测',
+        recordedAt: now - 30 * day,
+        status: 'pending',
+      },
+      {
+        id: 3,
+        buildingId: 'demo-taihe',
+        buildingName: '故宫太和殿',
+        diseaseType: '裂缝',
+        severity: '严重',
+        position: '墙体基部',
+        description: '裂缝扩展至1.8米，宽度增至8-10mm，有进一步发展趋势',
+        recommendation: '紧急加固，采用钢筋网片加固结合注浆处理',
+        estimatedCost: '5-8万元',
+        urgency: '立即处理',
+        recordedAt: now - 5 * day,
+        status: 'in_progress',
+      },
+    ],
+    'demo-yamen': [
+      {
+        id: 4,
+        buildingId: 'demo-yamen',
+        buildingName: '内乡县衙',
+        diseaseType: '腐蚀',
+        severity: '中度',
+        position: '木柱根部',
+        description: '柱根受潮腐蚀，直径减小约8%',
+        recommendation: '更换腐烂部分，做防腐处理，改善排水',
+        estimatedCost: '1.5-2万元',
+        urgency: '近期处理',
+        recordedAt: now - 15 * day,
+        status: 'pending',
+      },
+      {
+        id: 5,
+        buildingId: 'demo-yamen',
+        buildingName: '内乡县衙',
+        diseaseType: '虫蛀',
+        severity: '轻微',
+        position: '木梁架',
+        description: '发现白蚁蛀蚀痕迹，局部有蛀洞',
+        recommendation: '全面杀虫处理，更换蛀损构件',
+        estimatedCost: '1-2万元',
+        urgency: '定期监测',
+        recordedAt: now - 15 * day,
+        status: 'pending',
+      },
+    ],
+    'demo-tulou': [
+      {
+        id: 6,
+        buildingId: 'demo-tulou',
+        buildingName: '承启楼',
+        diseaseType: '剥落',
+        severity: '严重',
+        position: '夯土墙面',
+        description: '大面积抹灰层空鼓剥落，露出内部夯土',
+        recommendation: '铲除空鼓部分，重新抹灰，加设防潮层',
+        estimatedCost: '3-5万元',
+        urgency: '立即处理',
+        recordedAt: now - 10 * day,
+        status: 'pending',
+      },
+      {
+        id: 7,
+        buildingId: 'demo-tulou',
+        buildingName: '承启楼',
+        diseaseType: '裂缝',
+        severity: '中度',
+        position: '夯土墙面',
+        description: '墙面出现纵向裂缝，长度约3米',
+        recommendation: '裂缝灌浆加固，监测发展情况',
+        estimatedCost: '1-2万元',
+        urgency: '近期处理',
+        recordedAt: now - 10 * day,
+        status: 'pending',
+      },
+    ],
+  };
+  
+  return demoData[buildingId] || [];
+}
+
+// 导出报告
+function exportComparisonReport(report: DiseaseComparisonReport) {
+  const lines = [
+    '# 古建筑病害对比分析报告',
+    '',
+    `**生成时间**: ${new Date(report.metadata.generatedAt).toLocaleString('zh-CN')}`,
+    `**对比类型**: ${report.metadata.comparisonType === 'temporal' ? '时间轴对比（同一建筑）' : '空间对比（不同建筑）'}`,
+    '',
+    '## 建筑信息',
+    '',
+    '| 项目 | 建筑A | 建筑B |',
+    '|------|-------|-------|',
+    `| 名称 | ${report.metadata.buildingA.name} | ${report.metadata.buildingB.name} |`,
+    `| 类型 | ${report.metadata.buildingA.category} | ${report.metadata.buildingB.category} |`,
+    '',
+    '## 执行摘要',
+    '',
+    '### 关键发现',
+    ...report.executiveSummary.keyFindings.map(f => `- ${f}`),
+    '',
+    '### 严重问题',
+    ...(report.executiveSummary.criticalIssues.length > 0 
+      ? report.executiveSummary.criticalIssues.map(i => `- ⚠️ ${i}`)
+      : ['- 未发现严重问题']),
+    '',
+    '### 建议措施',
+    ...report.executiveSummary.recommendations.map(r => `- ${r}`),
+    '',
+    '## 详细对比',
+    '',
+    '### 病害数量',
+    `- 建筑A: ${report.detailedComparison.diseaseCount.a} 处`,
+    `- 建筑B: ${report.detailedComparison.diseaseCount.b} 处`,
+    `- 差异: ${report.detailedComparison.diseaseCount.difference > 0 ? '+' : ''}${report.detailedComparison.diseaseCount.difference} 处`,
+    '',
+    '### 严重程度分布',
+    '| 等级 | 建筑A | 建筑B |',
+    '|------|-------|-------|',
+    `| 严重 | ${report.detailedComparison.severityDistribution.a['严重'] || 0} | ${report.detailedComparison.severityDistribution.b['严重'] || 0} |`,
+    `| 中度 | ${report.detailedComparison.severityDistribution.a['中度'] || 0} | ${report.detailedComparison.severityDistribution.b['中度'] || 0} |`,
+    `| 轻微 | ${report.detailedComparison.severityDistribution.a['轻微'] || 0} | ${report.detailedComparison.severityDistribution.b['轻微'] || 0} |`,
+    '',
+    '### 费用分析',
+    `- 建筑A预估费用: ${report.detailedComparison.costAnalysis.a.toFixed(1)} 万元`,
+    `- 建筑B预估费用: ${report.detailedComparison.costAnalysis.b.toFixed(1)} 万元`,
+    `- 费用差异: ${report.detailedComparison.costAnalysis.difference > 0 ? '+' : ''}${report.detailedComparison.costAnalysis.difference.toFixed(1)} 万元 (${report.detailedComparison.costAnalysis.percentageDiff > 0 ? '+' : ''}${report.detailedComparison.costAnalysis.percentageDiff.toFixed(1)}%)`,
+    '',
+  ];
+
+  // 添加相似度分析（空间对比）
+  if (report.similarityAnalysis) {
+    lines.push(
+      '## 病害相似度分析',
+      '',
+      `**总体相似度**: ${report.similarityAnalysis.overallSimilarity}%`,
+      '',
+      '### 各维度相似度',
+      `- 类型相似度: ${report.similarityAnalysis.dimensions.typeSimilarity}%`,
+      `- 严重程度相似度: ${report.similarityAnalysis.dimensions.severitySimilarity}%`,
+      `- 位置相似度: ${report.similarityAnalysis.dimensions.positionSimilarity}%`,
+      `- 紧急程度相似度: ${report.similarityAnalysis.dimensions.urgencySimilarity}%`,
+      '',
+      '### 共同病害类型',
+      ...(report.similarityAnalysis.commonDiseaseTypes.length > 0
+        ? report.similarityAnalysis.commonDiseaseTypes.map(t => `- ${t}`)
+        : ['- 无共同病害类型']),
+      '',
+    );
+  }
+
+  // 添加时间轴分析（时间对比）
+  if (report.timelineAnalysis) {
+    lines.push(
+      '## 时间轴分析',
+      '',
+      `**发展趋势**: ${report.timelineAnalysis.trend === 'improving' ? '改善' : report.timelineAnalysis.trend === 'deteriorating' ? '恶化' : '稳定'}`,
+      `**恶化速率**: ${report.timelineAnalysis.deteriorationRate.toFixed(2)}/天`,
+      '',
+    );
+  }
+
+  // 添加保护建议
+  lines.push(
+    '## 保护建议',
+    '',
+    ...report.protectionSuggestions.map((s, idx) => [
+      `### ${idx + 1}. ${s.title}`,
+      `**优先级**: ${s.priority === 'high' ? '高' : s.priority === 'medium' ? '中' : '低'}`,
+      `**描述**: ${s.description}`,
+      ...(s.estimatedCost ? [`**预估费用**: ${s.estimatedCost}`] : []),
+      ...(s.timeline ? [`**时间计划**: ${s.timeline}`] : []),
+      ...(s.referenceCases ? [`**参考案例**: ${s.referenceCases.join(', ')}`] : []),
+      '',
+    ]).flat(),
+    '---',
+    '',
+    '*本报告由古建智识系统自动生成*',
+  );
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `病害对比分析报告-${new Date().toISOString().slice(0, 10)}.md`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
 
 export default function ComparisonPage() {
-  const { history } = useRecognitionHistory();
-  const [selectedBuildings, setSelectedBuildings] = useState<string[]>([]);
-  const [activeDimension, setActiveDimension] = useState('basic');
-  const [showImageComparison, setShowImageComparison] = useState(false);
+  const buildings = useBuildingList();
+  const [comparisonMode, setComparisonMode] = useState<ComparisonMode>('spatial');
+  const [selectedBuildingA, setSelectedBuildingA] = useState<string>('');
+  const [selectedBuildingB, setSelectedBuildingB] = useState<string>('');
+  const [diseasesA, setDiseasesA] = useState<DiseaseRecord[]>([]);
+  const [diseasesB, setDiseasesB] = useState<DiseaseRecord[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [report, setReport] = useState<DiseaseComparisonReport | null>(null);
 
-  // 准备建筑列表（历史记录 + 默认示例）
-  const availableBuildings = useMemo(() => {
-    const historyBuildings = history.map(convertToBuildingData);
-    return [...historyBuildings, ...DEFAULT_BUILDINGS];
-  }, [history]);
-
-  const toggleBuilding = (id: string) => {
-    setSelectedBuildings(prev => {
-      if (prev.includes(id)) {
-        return prev.filter(b => b !== id);
+  // 加载病害数据
+  useEffect(() => {
+    async function loadDiseases() {
+      if (!selectedBuildingA) return;
+      
+      setLoading(true);
+      try {
+        const records = await getBuildingDiseaseRecords(selectedBuildingA);
+        setDiseasesA(records);
+      } finally {
+        setLoading(false);
       }
-      if (prev.length >= 3) {
-        return [...prev.slice(1), id];
-      }
-      return [...prev, id];
-    });
-  };
+    }
+    loadDiseases();
+  }, [selectedBuildingA]);
 
-  const selectedData = availableBuildings.filter(b => selectedBuildings.includes(b.id));
+  useEffect(() => {
+    async function loadDiseases() {
+      if (!selectedBuildingB) return;
+      
+      setLoading(true);
+      try {
+        const records = await getBuildingDiseaseRecords(selectedBuildingB);
+        setDiseasesB(records);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadDiseases();
+  }, [selectedBuildingB]);
+
+  // 生成对比报告
+  useEffect(() => {
+    if (diseasesA.length === 0 || diseasesB.length === 0) {
+      setReport(null);
+      return;
+    }
+
+    const buildingA = buildings.find(b => b.id === selectedBuildingA);
+    const buildingB = buildings.find(b => b.id === selectedBuildingB);
+    
+    if (!buildingA || !buildingB) return;
+
+    const newReport = generateComparisonReport(
+      buildingA.id,
+      buildingA.name,
+      buildingA.category,
+      diseasesA,
+      buildingB.id,
+      buildingB.name,
+      buildingB.category,
+      diseasesB,
+      comparisonMode
+    );
+    
+    setReport(newReport);
+  }, [diseasesA, diseasesB, comparisonMode, buildings, selectedBuildingA, selectedBuildingB]);
+
+  // 获取时间轴数据（时间对比模式）
+  const timelineData = useMemo(() => {
+    if (comparisonMode !== 'temporal' || diseasesA.length === 0) return [];
+    return generateTimelineComparison(selectedBuildingA, diseasesA);
+  }, [comparisonMode, diseasesA, selectedBuildingA]);
+
+  // 获取相似度数据（空间对比模式）
+  const similarityData = useMemo(() => {
+    if (comparisonMode !== 'spatial' || diseasesA.length === 0 || diseasesB.length === 0) return null;
+    return calculateDiseaseSimilarity(diseasesA, diseasesB);
+  }, [comparisonMode, diseasesA, diseasesB]);
+
+  const canCompare = diseasesA.length > 0 && diseasesB.length > 0;
 
   return (
     <div className="min-h-screen pt-24 pb-20 page-container">
@@ -184,449 +414,617 @@ export default function ComparisonPage() {
             </Link>
             <span className="text-slate-600">|</span>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                <GitCompare className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-lg shadow-rose-500/30">
+                <Activity className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-white">建筑专业对比</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-white">病害对比分析</h1>
+                <p className="text-sm text-slate-400">基于AI识别的建筑病害智能对比</p>
+              </div>
             </div>
           </div>
 
-          {selectedBuildings.length >= 2 && (
+          {report && (
             <button
               type="button"
-              onClick={() => setShowImageComparison(!showImageComparison)}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-300 rounded-xl border border-blue-500/30 hover:bg-blue-500/30 transition-all"
+              onClick={() => exportComparisonReport(report)}
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-500/20 text-emerald-300 rounded-xl border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
             >
-              <ImageIcon className="w-4 h-4" />
-              {showImageComparison ? '隐藏图片' : '图片对比'}
+              <Download className="w-4 h-4" />
+              导出报告
             </button>
           )}
         </motion.div>
 
-        {/* 建筑选择区 */}
+        {/* 对比模式选择 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium text-white">
-              选择要对比的建筑（2-3个）
-            </h2>
-            <div className="flex items-center gap-2">
-              <History className="w-4 h-4 text-slate-400" />
-              <span className="text-sm text-slate-400">
-                历史记录: {history.length}条
-              </span>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {availableBuildings.map((building) => (
-              <button
-                type="button"
-                key={building.id}
-                onClick={() => toggleBuilding(building.id)}
-                className={`relative p-4 rounded-2xl border text-left transition-all duration-300 ${
-                  selectedBuildings.includes(building.id)
-                    ? 'bg-gradient-to-br from-blue-500/15 to-indigo-500/10 border-blue-500/30 shadow-lg shadow-blue-500/10'
-                    : 'bg-[rgba(15,20,40,0.5)] border-indigo-500/10 hover:border-blue-500/20'
-                }`}
-              >
-                {selectedBuildings.includes(building.id) && (
-                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">
-                      {selectedBuildings.indexOf(building.id) + 1}
-                    </span>
-                  </div>
-                )}
-                
-                <div className="flex items-start gap-3 mb-2">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    building.category === '皇宫' ? 'bg-amber-500/20' :
-                    building.category === '官府' ? 'bg-blue-500/20' :
-                    building.category === '桥梁' ? 'bg-cyan-500/20' :
-                    'bg-emerald-500/20'
-                  }`}>
-                    <span className="text-lg font-bold text-white/80">
-                      {building.name.charAt(0)}
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-white text-sm truncate">
-                      {building.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 truncate">
-                      {building.recordedAt ? 
-                        new Date(building.recordedAt).toLocaleDateString() : 
-                        '示例数据'
-                      }
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex flex-wrap gap-1.5">
-                  <span className={`px-2 py-0.5 rounded-full text-xs ${getCategoryStyle(building.category)}`}>
-                    {building.category}
-                  </span>
-                  <span className="px-2 py-0.5 bg-white/5 text-slate-400 rounded-full text-xs">
-                    {building.era}
-                  </span>
-                </div>
-              </button>
-            ))}
+          <div className="flex flex-wrap gap-4 p-4 bg-white/5 rounded-2xl border border-indigo-500/10">
+            <button
+              type="button"
+              onClick={() => setComparisonMode('spatial')}
+              className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all ${
+                comparisonMode === 'spatial'
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
+                  : 'bg-white/5 text-slate-400 hover:bg-white/10'
+              }`}
+            >
+              <GitCompare className="w-5 h-5" />
+              <div className="text-left">
+                <div className="font-medium">建筑间对比</div>
+                <div className="text-xs opacity-80">比较不同建筑的病害特征</div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setComparisonMode('temporal')}
+              className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all ${
+                comparisonMode === 'temporal'
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
+                  : 'bg-white/5 text-slate-400 hover:bg-white/10'
+              }`}
+            >
+              <Clock className="w-5 h-5" />
+              <div className="text-left">
+                <div className="font-medium">时间轴对比</div>
+                <div className="text-xs opacity-80">追踪同一建筑的病害变化</div>
+              </div>
+            </button>
           </div>
         </motion.div>
 
-        {/* 对比结果 */}
-        {selectedData.length >= 2 ? (
+        {/* 建筑选择 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h2 className="text-lg font-medium text-white mb-4">
+            {comparisonMode === 'spatial' ? '选择要对比的两座建筑' : '选择要分析的建筑'}
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* 建筑A选择 */}
+            <div className="space-y-2">
+              <label className="text-sm text-slate-400">
+                {comparisonMode === 'spatial' ? '建筑 A' : '选择建筑'}
+              </label>
+              <select
+                value={selectedBuildingA}
+                onChange={(e) => setSelectedBuildingA(e.target.value)}
+                className="w-full p-3 bg-white/5 border border-indigo-500/20 rounded-xl text-white focus:border-blue-500 focus:outline-none"
+              >
+                <option value="">请选择建筑...</option>
+                {buildings.map(b => (
+                  <option key={b.id} value={b.id}>
+                    {b.name} ({b.category} · {b.era})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 建筑B选择（仅空间对比模式） */}
+            {comparisonMode === 'spatial' && (
+              <div className="space-y-2">
+                <label className="text-sm text-slate-400">建筑 B</label>
+                <select
+                  value={selectedBuildingB}
+                  onChange={(e) => setSelectedBuildingB(e.target.value)}
+                  className="w-full p-3 bg-white/5 border border-indigo-500/20 rounded-xl text-white focus:border-blue-500 focus:outline-none"
+                >
+                  <option value="">请选择建筑...</option>
+                  {buildings.filter(b => b.id !== selectedBuildingA).map(b => (
+                    <option key={b.id} value={b.id}>
+                      {b.name} ({b.category} · {b.era})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        {/* 加载状态 */}
+        {loading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center justify-center py-12"
+          >
+            <div className="flex items-center gap-3 text-slate-400">
+              <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              正在加载病害数据...
+            </div>
+          </motion.div>
+        )}
+
+        {/* 对比结果展示 */}
+        {!loading && canCompare && report && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            {/* 维度切换 */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {COMPARISON_DIMENSIONS.map((dim) => (
+            {/* Tab切换 */}
+            <div className="flex flex-wrap gap-2 border-b border-indigo-500/10 pb-4">
+              {[
+                { key: 'overview', label: '概览', icon: BarChart3 },
+                { key: 'diseases', label: '病害对比', icon: Activity },
+                ...(comparisonMode === 'temporal' ? [{ key: 'timeline', label: '时间轴', icon: Clock }] : []),
+                ...(comparisonMode === 'spatial' ? [{ key: 'similarity', label: '相似度分析', icon: GitCompare }] : []),
+                { key: 'recommendations', label: '保护建议', icon: Shield },
+              ].map(tab => (
                 <button
                   type="button"
-                  key={dim.key}
-                  onClick={() => setActiveDimension(dim.key)}
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
-                    activeDimension === dim.key
-                      ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
-                      : 'bg-white/5 text-slate-400 hover:bg-white/10'
+                    activeTab === tab.key
+                      ? 'bg-blue-500 text-white'
+                      : 'text-slate-400 hover:bg-white/5'
                   }`}
                 >
-                  <dim.icon className="w-4 h-4" />
-                  {dim.label}
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
                 </button>
               ))}
             </div>
 
-            {/* 图片对比区 */}
-            <AnimatePresence>
-              {showImageComparison && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="grid grid-cols-2 md:grid-cols-3 gap-4"
-                >
-                  {selectedData.map((building) => (
-                    <div key={building.id} className="relative aspect-video rounded-2xl overflow-hidden bg-slate-800">
-                      {building.image ? (
-                        <img 
-                          src={building.image} 
-                          alt={building.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-800">
-                          <div className="text-center">
-                            <Building2 className="w-12 h-12 text-slate-600 mx-auto mb-2" />
-                            <p className="text-slate-500 text-sm">{building.name}</p>
+            {/* 概览Tab */}
+            {activeTab === 'overview' && (
+              <div className="space-y-6">
+                {/* 关键指标卡片 */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="bg-white/5 rounded-2xl p-4 border border-indigo-500/10">
+                    <div className="flex items-center gap-2 text-slate-400 text-sm mb-2">
+                      <Activity className="w-4 h-4" />
+                      病害总数
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-white">{report.detailedComparison.diseaseCount.a + report.detailedComparison.diseaseCount.b}</span>
+                      <span className="text-sm text-slate-500">处</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 border border-indigo-500/10">
+                    <div className="flex items-center gap-2 text-rose-400 text-sm mb-2">
+                      <AlertTriangle className="w-4 h-4" />
+                      严重病害
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-rose-400">
+                        {(report.detailedComparison.severityDistribution.a['严重'] || 0) + 
+                         (report.detailedComparison.severityDistribution.b['严重'] || 0)}
+                      </span>
+                      <span className="text-sm text-slate-500">处</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 border border-indigo-500/10">
+                    <div className="flex items-center gap-2 text-amber-400 text-sm mb-2">
+                      <AlertCircle className="w-4 h-4" />
+                      需立即处理
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-amber-400">
+                        {diseasesA.filter(d => d.urgency === '立即处理').length + 
+                         diseasesB.filter(d => d.urgency === '立即处理').length}
+                      </span>
+                      <span className="text-sm text-slate-500">处</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 border border-indigo-500/10">
+                    <div className="flex items-center gap-2 text-emerald-400 text-sm mb-2">
+                      <CheckCircle2 className="w-4 h-4" />
+                      预估总费用
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-emerald-400">
+                        {(report.detailedComparison.costAnalysis.a + report.detailedComparison.costAnalysis.b).toFixed(1)}
+                      </span>
+                      <span className="text-sm text-slate-500">万元</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 执行摘要 */}
+                <div className="bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-2xl p-6 border border-indigo-500/10">
+                  <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-blue-400" />
+                    执行摘要
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium text-slate-300 mb-2">关键发现</h4>
+                      <ul className="space-y-1">
+                        {report.executiveSummary.keyFindings.map((finding, idx) => (
+                          <li key={idx} className="text-sm text-slate-400 flex items-start gap-2">
+                            <span className="text-blue-400 mt-1">•</span>
+                            {finding}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {report.executiveSummary.criticalIssues.length > 0 && (
+                      <div className="bg-rose-500/10 rounded-xl p-4 border border-rose-500/20">
+                        <h4 className="text-sm font-medium text-rose-300 mb-2 flex items-center gap-2">
+                          <AlertTriangle className="w-4 h-4" />
+                          严重问题
+                        </h4>
+                        <ul className="space-y-1">
+                          {report.executiveSummary.criticalIssues.map((issue, idx) => (
+                            <li key={idx} className="text-sm text-rose-200 flex items-start gap-2">
+                              <span className="mt-1">⚠️</span>
+                              {issue}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <div>
+                      <h4 className="text-sm font-medium text-slate-300 mb-2">建议措施</h4>
+                      <ul className="space-y-1">
+                        {report.executiveSummary.recommendations.map((rec, idx) => (
+                          <li key={idx} className="text-sm text-slate-400 flex items-start gap-2">
+                            <span className="text-emerald-400 mt-1">→</span>
+                            {rec}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 病害对比Tab */}
+            {activeTab === 'diseases' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* 建筑A病害 */}
+                  <div className="bg-white/5 rounded-2xl p-6 border border-indigo-500/10">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-bold text-white">
+                        {report.metadata.buildingA.name}
+                      </h3>
+                      <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
+                        {diseasesA.length} 处病害
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {diseasesA.map(disease => (
+                        <DiseaseCard key={disease.id} disease={disease} />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 建筑B病害 */}
+                  <div className="bg-white/5 rounded-2xl p-6 border border-indigo-500/10">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-bold text-white">
+                        {report.metadata.buildingB.name}
+                      </h3>
+                      <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
+                        {diseasesB.length} 处病害
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {diseasesB.map(disease => (
+                        <DiseaseCard key={disease.id} disease={disease} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 时间轴Tab（仅时间对比模式） */}
+            {activeTab === 'timeline' && comparisonMode === 'temporal' && timelineData.length > 0 && (
+              <div className="space-y-6">
+                <div className="bg-white/5 rounded-2xl p-6 border border-indigo-500/10">
+                  <h3 className="text-lg font-bold text-white mb-6">病害发展时间轴</h3>
+                  
+                  <div className="relative">
+                    {/* 时间轴线 */}
+                    <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-blue-500/30" />
+                    
+                    <div className="space-y-6">
+                      {timelineData.map((point, idx) => (
+                        <TimelinePoint key={point.timestamp} point={point} index={idx} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {report.timelineAnalysis && (
+                  <div className="bg-gradient-to-br from-amber-500/5 to-orange-500/5 rounded-2xl p-6 border border-amber-500/20">
+                    <h3 className="text-lg font-bold text-white mb-4">趋势分析</h3>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${
+                        report.timelineAnalysis.trend === 'improving' ? 'bg-emerald-500/20' :
+                        report.timelineAnalysis.trend === 'deteriorating' ? 'bg-rose-500/20' :
+                        'bg-amber-500/20'
+                      }`}>
+                        {report.timelineAnalysis.trend === 'improving' ? (
+                          <TrendingUp className="w-8 h-8 text-emerald-400" />
+                        ) : report.timelineAnalysis.trend === 'deteriorating' ? (
+                          <TrendingDown className="w-8 h-8 text-rose-400" />
+                        ) : (
+                          <Minus className="w-8 h-8 text-amber-400" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-white">
+                          {report.timelineAnalysis.trend === 'improving' ? '状况改善' :
+                           report.timelineAnalysis.trend === 'deteriorating' ? '持续恶化' : '基本稳定'}
+                        </div>
+                        <div className="text-sm text-slate-400">
+                          恶化速率: {report.timelineAnalysis.deteriorationRate.toFixed(2)}/天
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 相似度Tab（仅空间对比模式） */}
+            {activeTab === 'similarity' && comparisonMode === 'spatial' && similarityData && (
+              <div className="space-y-6">
+                {/* 总体相似度 */}
+                <div className="bg-white/5 rounded-2xl p-6 border border-indigo-500/10">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-bold text-white">病害相似度分析</h3>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-slate-400">总体相似度</span>
+                      <span className={`text-3xl font-bold ${
+                        similarityData.overallSimilarity >= 70 ? 'text-emerald-400' :
+                        similarityData.overallSimilarity >= 40 ? 'text-amber-400' :
+                        'text-rose-400'
+                      }`}>
+                        {similarityData.overallSimilarity}%
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 各维度相似度 */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[
+                      { label: '类型相似度', value: similarityData.dimensions.typeSimilarity },
+                      { label: '严重程度相似度', value: similarityData.dimensions.severitySimilarity },
+                      { label: '位置相似度', value: similarityData.dimensions.positionSimilarity },
+                      { label: '紧急程度相似度', value: similarityData.dimensions.urgencySimilarity },
+                    ].map(dim => (
+                      <div key={dim.label} className="bg-white/5 rounded-xl p-4">
+                        <div className="text-sm text-slate-400 mb-2">{dim.label}</div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-2 bg-slate-700 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-blue-500 rounded-full transition-all"
+                              style={{ width: `${dim.value}%` }}
+                            />
                           </div>
+                          <span className="text-sm font-medium text-white w-10">{dim.value}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 共同病害 */}
+                {similarityData.commonDiseaseTypes.length > 0 && (
+                  <div className="bg-emerald-500/5 rounded-2xl p-6 border border-emerald-500/20">
+                    <h4 className="text-sm font-medium text-emerald-300 mb-3">共同病害类型</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {similarityData.commonDiseaseTypes.map(type => (
+                        <span key={type} className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm">
+                          {type}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 推荐建议 */}
+                <div className="bg-blue-500/5 rounded-2xl p-6 border border-blue-500/20">
+                  <h4 className="text-sm font-medium text-blue-300 mb-3">分析建议</h4>
+                  <ul className="space-y-2">
+                    {similarityData.recommendations.map((rec, idx) => (
+                      <li key={idx} className="text-sm text-slate-400 flex items-start gap-2">
+                        <span className="text-blue-400 mt-1">→</span>
+                        {rec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* 保护建议Tab */}
+            {activeTab === 'recommendations' && (
+              <div className="space-y-4">
+                {report.protectionSuggestions.map((suggestion, idx) => (
+                  <div 
+                    key={idx}
+                    className={`bg-white/5 rounded-2xl p-6 border ${
+                      suggestion.priority === 'high' ? 'border-rose-500/30' :
+                      suggestion.priority === 'medium' ? 'border-amber-500/30' :
+                      'border-emerald-500/30'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          suggestion.priority === 'high' ? 'bg-rose-500/20 text-rose-300' :
+                          suggestion.priority === 'medium' ? 'bg-amber-500/20 text-amber-300' :
+                          'bg-emerald-500/20 text-emerald-300'
+                        }`}>
+                          {suggestion.priority === 'high' ? '高优先级' :
+                           suggestion.priority === 'medium' ? '中优先级' : '低优先级'}
+                        </span>
+                        <h4 className="text-lg font-bold text-white">{suggestion.title}</h4>
+                      </div>
+                    </div>
+                    <p className="text-slate-400 mb-4">{suggestion.description}</p>
+                    <div className="flex flex-wrap gap-4 text-sm">
+                      {suggestion.estimatedCost && (
+                        <div className="flex items-center gap-2 text-emerald-400">
+                          <span>预估费用:</span>
+                          <span className="font-medium">{suggestion.estimatedCost}</span>
                         </div>
                       )}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                        <p className="text-white font-bold">{building.name}</p>
-                        <p className="text-white/70 text-sm">{building.category}</p>
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* 详细对比表格 */}
-            <div className="overflow-x-auto rounded-2xl border border-indigo-500/10 bg-[rgba(15,20,40,0.5)]">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-indigo-500/10 bg-white/5">
-                    <th className="text-left p-4 text-slate-400 font-medium w-32">对比维度</th>
-{selectedData.map((building, idx) => (
-                      <th key={building.id} className="text-left p-4 min-w-[250px]">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                            building.category === '皇宫' ? 'bg-amber-500/20' :
-                            building.category === '官府' ? 'bg-blue-500/20' :
-                            building.category === '桥梁' ? 'bg-cyan-500/20' :
-                            'bg-emerald-500/20'
-                          }`}>
-                            <span className="text-lg font-bold text-white">{idx + 1}</span>
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-white">{building.name}</h3>
-                            <p className="text-xs text-slate-400">{building.category} · {building.era}</p>
-                          </div>
+                      {suggestion.timeline && (
+                        <div className="flex items-center gap-2 text-blue-400">
+                          <Calendar className="w-4 h-4" />
+                          <span>{suggestion.timeline}</span>
                         </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                
-                <tbody className="divide-y divide-indigo-500/5">
-                  {activeDimension === 'basic' && (
-                    <>
-                      <tr>
-                        <td className="p-4 text-slate-400"><Calendar className="w-4 h-4 inline mr-2" />建造年代</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">{b.era}（{b.year}）</td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400"><MapPin className="w-4 h-4 inline mr-2" />地理位置</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">{b.location}</td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400"><Building2 className="w-4 h-4 inline mr-2" />建筑描述</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-400 text-sm leading-relaxed">{b.description}</td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400"><Layers className="w-4 h-4 inline mr-2" />主要特征</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4">
-                            <div className="flex flex-wrap gap-1">
-                              {b.features.map(f => (
-                                <span key={f} className="px-2 py-0.5 bg-blue-500/10 text-blue-300 rounded-full text-xs border border-blue-500/20">
-                                  {f}
-                                </span>
-                              ))}
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-                    </>
-                  )}
-                  
-                  {activeDimension === 'components' && (
-                    <>
-                      <tr>
-                        <td className="p-4 text-slate-400">屋顶形制</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">
-                            {b.components?.roofType || '未识别'}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">斗拱类型</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">
-                            {b.components?.dougongType || '未识别'}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">彩画纹样</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">
-                            {b.components?.paintingPattern || '未识别'}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">脊兽数量</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">
-                            {b.components?.beastCount || 0} 只
-                            {b.components?.beastTypes && b.components.beastTypes.length > 0 && (
-                              <span className="text-xs text-slate-500 ml-2">
-                                （{b.components.beastTypes.join('、')}）
-                              </span>
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">构件识别置信度</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4">
-                            <div className="flex items-center gap-2">
-                              <div className="flex-1 h-2 bg-slate-700 rounded-full overflow-hidden">
-                                <div 
-                                  className="h-full bg-blue-500 rounded-full"
-                                  style={{ width: `${(b.components?.confidence || 0) * 100}%` }}
-                                />
-                              </div>
-                              <span className="text-sm text-slate-400 w-12">
-                                {Math.round((b.components?.confidence || 0) * 100)}%
-                              </span>
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-                    </>
-                  )}
-                  
-                  {activeDimension === 'structure' && (
-                    <>
-                      <tr>
-                        <td className="p-4 text-slate-400">多视角融合</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">
-                            {b.fusion?.imageCount || 1} 张图片
-                            <span className="text-xs text-slate-500 ml-2">
-                              （一致性 {Math.round((b.fusion?.consistency || 0) * 100)}%）
-                            </span>
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">融合摘要</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-400 text-sm">
-                            {b.fusion?.crossViewSummary || '单视角识别'}
-                          </td>
-                        ))}
-                      </tr>
-                    </>
-                  )}
-                  
-                  {activeDimension === 'gis' && (
-                    <>
-                      <tr>
-                        <td className="p-4 text-slate-400"><Compass className="w-4 h-4 inline mr-2" />标准地名</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">
-                            {b.gis?.placeName || '未定位'}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">坐标位置</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300 font-mono text-sm">
-                            {b.gis?.lat ? `${b.gis.lat.toFixed(4)}, ${b.gis.lng?.toFixed(4)}` : '未定位'}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">历史地理语境</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-400 text-sm leading-relaxed">
-                            {b.gis?.dynastyContext || '未分析'}
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <td className="p-4 text-slate-400">政区层级</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4 text-slate-300">
-                            {b.gis?.territoryLevel || '未确定'}
-                          </td>
-                        ))}
-                      </tr>
-                    </>
-                  )}
-                  
-                  {activeDimension === 'confidence' && (
-                    <>
-                      <tr>
-                        <td className="p-4 text-slate-400"><Shield className="w-4 h-4 inline mr-2" />整体置信度</td>
-                        {selectedData.map(b => (
-                          <td key={b.id} className="p-4">
-                            <div className="flex items-center gap-3">
-                              <div className="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
-                                <div 
-                                  className={`h-full rounded-full ${
-                                    b.confidence >= 0.85 ? 'bg-emerald-500' :
-                                    b.confidence >= 0.65 ? 'bg-amber-500' :
-                                    'bg-red-500'
-                                  }`}
-                                  style={{ width: `${b.confidence * 100}%` }}
-                                />
-                              </div>
-                              <span className={`text-lg font-bold w-16 ${
-                                b.confidence >= 0.85 ? 'text-emerald-400' :
-                                b.confidence >= 0.65 ? 'text-amber-400' :
-                                'text-red-400'
-                              }`}>
-                                {Math.round(b.confidence * 100)}%
-                              </span>
-                            </div>
-                            <p className="text-xs text-slate-500 mt-1">
-                              {b.confidence >= 0.85 ? '高置信度 - 结论可靠' :
-                               b.confidence >= 0.65 ? '中置信度 - 建议补充' :
-                               '低置信度 - 需要重拍'}
-                            </p>
-                          </td>
-                        ))}
-                      </tr>
-                    </>
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* 对比总结 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 p-6"
-            >
-              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <GitCompare className="w-5 h-5 text-blue-400" />
-                对比分析总结
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {selectedData.map((building, idx) => (
-                  <div key={building.id} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold ${
-                        building.category === '皇宫' ? 'bg-amber-500' :
-                        building.category === '官府' ? 'bg-blue-500' :
-                        building.category === '桥梁' ? 'bg-cyan-500' :
-                        'bg-emerald-500'
-                      }`}>
-                        {idx + 1}
-                      </div>
-                      <h4 className="font-bold text-white">{building.name}</h4>
+                      )}
                     </div>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex justify-between">
-                        <span className="text-slate-400">构件完整度</span>
-                        <span className="text-slate-300">{building.components ? '已识别' : '未识别'}</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-slate-400">地理定位</span>
-                        <span className="text-slate-300">{building.gis?.placeName ? '已定位' : '未定位'}</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-slate-400">多视角验证</span>
-                        <span className="text-slate-300">{building.fusion?.imageCount || 1}张</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-slate-400">识别置信度</span>
-                        <span className={building.confidence >= 0.85 ? 'text-emerald-400' : building.confidence >= 0.65 ? 'text-amber-400' : 'text-red-400'}>
-                          {Math.round(building.confidence * 100)}%
-                        </span>
-                      </li>
-                    </ul>
+                    {suggestion.referenceCases && suggestion.referenceCases.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-white/10">
+                        <div className="text-sm text-slate-500 mb-2">参考案例:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {suggestion.referenceCases.map((ref, refIdx) => (
+                            <span key={refIdx} className="px-2 py-1 bg-white/5 text-slate-400 rounded text-xs">
+                              {ref}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
-            </motion.div>
+            )}
           </motion.div>
-        ) : (
+        )}
+
+        {/* 空状态 */}
+        {!loading && !canCompare && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-20 bg-[rgba(15,20,40,0.5)] rounded-2xl border border-indigo-500/10"
+            className="text-center py-20 bg-white/5 rounded-2xl border border-indigo-500/10"
           >
-            <GitCompare className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">请选择至少2个建筑进行对比</h3>
-            <p className="text-slate-400 mb-4">可以从识别历史中选择，或使用默认示例</p>
-            <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
-              <History className="w-4 h-4" />
-              <span>提示：识别建筑后会自动保存到历史记录</span>
+            <Search className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-white mb-2">
+              {comparisonMode === 'spatial' ? '请选择两座建筑进行对比' : '请选择要分析的建筑'}
+            </h3>
+            <p className="text-slate-400 mb-4">
+              {comparisonMode === 'spatial' 
+                ? '选择不同建筑的病害数据，进行相似度分析和经验借鉴'
+                : '选择建筑后可查看其病害发展时间轴和趋势分析'}
+            </p>
+            <div className="flex items-center justify-center gap-6 text-sm text-slate-500">
+              <div className="flex items-center gap-2">
+                <Building2 className="w-4 h-4" />
+                <span>{buildings.length} 个可用建筑</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <History className="w-4 h-4" />
+                <span>支持识别历史数据</span>
+              </div>
             </div>
           </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// 病害卡片组件
+function DiseaseCard({ disease }: { disease: DiseaseRecord }) {
+  return (
+    <div className="bg-white/5 rounded-xl p-4 border border-indigo-500/10 hover:border-indigo-500/30 transition-colors">
+      <div className="flex items-start justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-white">{disease.diseaseType}</span>
+          <span className={`px-2 py-0.5 rounded-full text-xs ${
+            disease.severity === '严重' ? 'bg-rose-500/20 text-rose-300' :
+            disease.severity === '中度' ? 'bg-amber-500/20 text-amber-300' :
+            'bg-emerald-500/20 text-emerald-300'
+          }`}>
+            {disease.severity}
+          </span>
+        </div>
+        <span className={`text-xs ${
+          disease.urgency === '立即处理' ? 'text-rose-400' :
+          disease.urgency === '近期处理' ? 'text-amber-400' :
+          'text-emerald-400'
+        }`}>
+          {disease.urgency}
+        </span>
+      </div>
+      <div className="text-sm text-slate-400 mb-2">
+        <MapPin className="w-3 h-3 inline mr-1" />
+        {disease.position}
+      </div>
+      <p className="text-sm text-slate-500 line-clamp-2">{disease.description}</p>
+      <div className="mt-3 flex items-center justify-between text-xs">
+        <span className="text-emerald-400">{disease.estimatedCost}</span>
+        <span className="text-slate-500">
+          {new Date(disease.recordedAt).toLocaleDateString()}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// 时间点组件
+function TimelinePoint({ point, index }: { point: TimelineComparisonPoint; index: number }) {
+  return (
+    <div className="relative pl-12">
+      {/* 时间点标记 */}
+      <div className="absolute left-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center border-4 border-slate-900">
+        <span className="text-white text-xs font-bold">{index + 1}</span>
+      </div>
+      
+      <div className="bg-white/5 rounded-xl p-4 border border-indigo-500/10">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-white font-medium">{point.date}</span>
+          {point.changes && (
+            <div className="flex items-center gap-2">
+              {point.changes.newDiseases > 0 && (
+                <span className="px-2 py-0.5 bg-rose-500/20 text-rose-300 rounded text-xs">
+                  +{point.changes.newDiseases} 新病害
+                </span>
+              )}
+              {point.changes.resolvedDiseases > 0 && (
+                <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded text-xs">
+                  -{point.changes.resolvedDiseases} 已解决
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+        
+        <div className="grid grid-cols-4 gap-4 text-sm">
+          <div>
+            <div className="text-slate-500">总数</div>
+            <div className="text-white font-medium">{point.stats.total}</div>
+          </div>
+          <div>
+            <div className="text-slate-500">严重</div>
+            <div className="text-rose-400 font-medium">{point.stats.severe}</div>
+          </div>
+          <div>
+            <div className="text-slate-500">需立即处理</div>
+            <div className="text-amber-400 font-medium">{point.stats.immediate}</div>
+          </div>
+          <div>
+            <div className="text-slate-500">预估费用</div>
+            <div className="text-emerald-400 font-medium">{point.stats.totalCost.toFixed(1)}万</div>
+          </div>
+        </div>
+
+        {point.changes && point.changes.severityIncreased > 0 && (
+          <div className="mt-3 text-sm text-rose-400">
+            ⚠️ {point.changes.severityIncreased} 处病害恶化
+          </div>
         )}
       </div>
     </div>
