@@ -6,7 +6,7 @@ import { BuildingDiagnosisSection } from '../components/BuildingDiagnosisSection
 import { DiseaseHeatmap3D } from '../components/DiseaseHeatmap3D';
 import ProtectionStrategySandbox from '../components/ProtectionStrategySandbox';
 import { CATEGORY_DISEASE_MAPPINGS } from '../types/disease3d';
-import { useAppContext } from '../contexts/AppContext';
+import { useAppContext } from '../contexts/useAppContext';
 import type { Disease3DMapping, ComponentDiseaseHotspot } from '../types/disease3d';
 
 export default function DiagnosisPage() {
@@ -70,7 +70,7 @@ export default function DiagnosisPage() {
 
             {result && (
               <div className="flex items-center gap-3">
-                <span className="text-slate-500">当前建筑:</span>
+                <span className="text-slate-400">当前建筑:</span>
                 <span className="px-4 py-2 bg-gradient-to-r from-blue-500/15 to-indigo-500/15 text-blue-300 rounded-full font-medium border border-blue-500/20">{result.name}</span>
                 <span className="px-3 py-1.5 bg-white/5 text-slate-400 rounded-full text-sm border border-indigo-500/10">{result.category}</span>
               </div>
@@ -79,7 +79,7 @@ export default function DiagnosisPage() {
 
         {!result ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
-            <Stethoscope className="w-20 h-20 text-slate-600 mx-auto mb-6" />
+            <Stethoscope className="w-20 h-20 text-slate-500 mx-auto mb-6" />
             <h2 className="text-2xl font-bold text-white mb-4">请先识别建筑</h2>
             <p className="text-slate-400 mb-8">需要先上传建筑图片进行识别，才能查看病害诊断</p>
             <Link to="/" className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-full hover:scale-105 transition-transform">
@@ -124,7 +124,7 @@ export default function DiagnosisPage() {
                           <p className="text-slate-400 text-sm">{selectedHotspot.componentType}</p>
                         </div>
                         <div>
-                          <p className="text-sm text-slate-500 mb-2">典型病害</p>
+                          <p className="text-sm text-slate-400 mb-2">典型病害</p>
                           <div className="space-y-2">
                             {selectedHotspot.typicalDiseases.map((disease) => (
                               <div key={disease} className="flex items-center gap-2 text-slate-300">
@@ -140,7 +140,7 @@ export default function DiagnosisPage() {
                         <button type="button" onClick={() => setSelectedHotspot(null)} className="w-full py-2 bg-white/5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-all border border-indigo-500/10 hover:shadow-md">关闭详情</button>
                       </motion.div>
                     ) : (
-                      <div className="text-center py-10 text-slate-500">
+                      <div className="text-center py-10 text-slate-400">
                         <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50" />
                         <p>点击3D模型上的热力球<br />查看构件详情</p>
                       </div>

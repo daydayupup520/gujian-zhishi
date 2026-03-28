@@ -14,7 +14,7 @@ export function useRecognitionHistory() {
       const data = await recognitionHistoryDB.getAll();
       setHistory(data);
     } catch (error) {
-      console.error('加载识别历史失败:', error);
+      console.error('[useRecognitionHistory] 加载历史失败:', error);
     } finally {
       setLoading(false);
     }
@@ -30,7 +30,7 @@ export function useRecognitionHistory() {
       await loadHistory();
       return id;
     } catch (error) {
-      console.error('添加识别历史失败:', error);
+      console.error('[useRecognitionHistory] 添加历史失败:', error);
       return null;
     }
   }, [loadHistory]);
@@ -40,7 +40,7 @@ export function useRecognitionHistory() {
       await recognitionHistoryDB.delete(id);
       await loadHistory();
     } catch (error) {
-      console.error('删除识别历史失败:', error);
+      console.error('[useRecognitionHistory] 删除历史失败:', error);
     }
   }, [loadHistory]);
 
@@ -49,7 +49,7 @@ export function useRecognitionHistory() {
       await recognitionHistoryDB.clear();
       await loadHistory();
     } catch (error) {
-      console.error('清空识别历史失败:', error);
+      console.error('[useRecognitionHistory] 清空历史失败:', error);
     }
   }, [loadHistory]);
 
@@ -67,7 +67,7 @@ export function useFavoriteBuildings() {
       const data = await favoriteBuildingsDB.getAll();
       setFavorites(data);
     } catch (error) {
-      console.error('加载收藏失败:', error);
+      console.error('[useFavoriteBuildings] 加载收藏失败:', error);
     } finally {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ export function useFavoriteBuildings() {
       await loadFavorites();
       return isFav;
     } catch (error) {
-      console.error('切换收藏失败:', error);
+      console.error('[useFavoriteBuildings] 切换收藏失败:', error);
       return false;
     }
   }, [loadFavorites]);
@@ -103,7 +103,7 @@ export function useFavoriteBuildings() {
       await favoriteBuildingsDB.remove(buildingId);
       await loadFavorites();
     } catch (error) {
-      console.error('取消收藏失败:', error);
+      console.error('[useFavoriteBuildings] 移除收藏失败:', error);
     }
   }, [loadFavorites]);
 
@@ -130,11 +130,11 @@ export function useDiseaseRecords(buildingId?: string) {
         data = await diseaseRecordsDB.getAll();
       }
       setRecords(data);
-      
+
       const stats = await diseaseRecordsDB.getStatistics();
       setStatistics(stats);
     } catch (error) {
-      console.error('加载病害记录失败:', error);
+      console.error('[useDiseaseRecords] 加载病害记录失败:', error);
     } finally {
       setLoading(false);
     }
@@ -150,7 +150,7 @@ export function useDiseaseRecords(buildingId?: string) {
       await loadRecords();
       return id;
     } catch (error) {
-      console.error('添加病害记录失败:', error);
+      console.error('[useDiseaseRecords] 添加病害记录失败:', error);
       return null;
     }
   }, [loadRecords]);
@@ -160,7 +160,7 @@ export function useDiseaseRecords(buildingId?: string) {
       await diseaseRecordsDB.updateStatus(id, status);
       await loadRecords();
     } catch (error) {
-      console.error('更新病害状态失败:', error);
+      console.error('[useDiseaseRecords] 更新状态失败:', error);
     }
   }, [loadRecords]);
 
@@ -169,7 +169,7 @@ export function useDiseaseRecords(buildingId?: string) {
       await diseaseRecordsDB.delete(id);
       await loadRecords();
     } catch (error) {
-      console.error('删除病害记录失败:', error);
+      console.error('[useDiseaseRecords] 删除记录失败:', error);
     }
   }, [loadRecords]);
 
@@ -187,7 +187,7 @@ export function useComparisonGroups() {
       const data = await comparisonGroupsDB.getAll();
       setGroups(data);
     } catch (error) {
-      console.error('加载对比组失败:', error);
+      console.error('[useComparisonGroups] 加载对比组失败:', error);
     } finally {
       setLoading(false);
     }
@@ -203,7 +203,7 @@ export function useComparisonGroups() {
       await loadGroups();
       return id;
     } catch (error) {
-      console.error('创建对比组失败:', error);
+      console.error('[useComparisonGroups] 创建对比组失败:', error);
       return null;
     }
   }, [loadGroups]);
@@ -213,7 +213,7 @@ export function useComparisonGroups() {
       await comparisonGroupsDB.update(id, updates);
       await loadGroups();
     } catch (error) {
-      console.error('更新对比组失败:', error);
+      console.error('[useComparisonGroups] 更新对比组失败:', error);
     }
   }, [loadGroups]);
 
@@ -222,7 +222,7 @@ export function useComparisonGroups() {
       await comparisonGroupsDB.delete(id);
       await loadGroups();
     } catch (error) {
-      console.error('删除对比组失败:', error);
+      console.error('[useComparisonGroups] 删除对比组失败:', error);
     }
   }, [loadGroups]);
 

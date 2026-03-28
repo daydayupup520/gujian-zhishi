@@ -1,13 +1,6 @@
-import { useState, createContext, useContext, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
+import { AppContext } from './AppContextDef';
 import type { RecognitionResult } from '../types/ai';
-
-interface AppContextType {
-  recognitionResult: RecognitionResult | null;
-  setRecognitionResult: (result: RecognitionResult | null) => void;
-  clearRecognitionResult: () => void;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [recognitionResult, setRecognitionResultState] = useState<RecognitionResult | null>(() => {
@@ -44,12 +37,4 @@ export function AppProvider({ children }: { children: ReactNode }) {
       {children}
     </AppContext.Provider>
   );
-}
-
-export function useAppContext() {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error('useAppContext must be used within an AppProvider');
-  }
-  return context;
 }

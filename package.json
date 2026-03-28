@@ -18,13 +18,10 @@
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
-    "@tensorflow-models/mobilenet": "^2.1.1",
-    "@tensorflow/tfjs": "^4.22.0",
     "@types/three": "^0.183.1",
     "canvas-confetti": "^1.9.4",
     "dexie": "^4.3.0",
     "framer-motion": "^12.34.3",
-    "langchain": "^1.2.28",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

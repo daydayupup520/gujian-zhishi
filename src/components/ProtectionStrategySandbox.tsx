@@ -1,15 +1,16 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Shield, 
-  Clock, 
-  DollarSign, 
-  AlertTriangle, 
-  CheckCircle2, 
-  Play, 
+import type { ComponentType } from 'react';
+import {
+  Shield,
+  Clock,
+  DollarSign,
+  AlertTriangle,
+  CheckCircle2,
+  Play,
   RotateCcw,
   Sparkles,
-  
+
   TrendingUp,
   Hammer,
   Paintbrush,
@@ -22,7 +23,7 @@ interface Strategy {
   id: string;
   name: string;
   description: string;
-  icon: any;
+  icon: ComponentType<{ className?: string }>;
   duration: string;
   cost: string;
   effectiveness: number; // 0-100

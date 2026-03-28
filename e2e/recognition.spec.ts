@@ -28,9 +28,7 @@ test.describe('AI识别功能测试', () => {
 
   test('识别结果显示区域存在', async ({ page }) => {
     await page.goto('/');
-    
-    // 验证结果卡片或展示区域存在
-    const resultCards = page.locator('[data-testid="recognition-result"], .result-card');
+
     // 即使没有结果，区域也应该存在
     const resultSection = page.locator('section').filter({ hasText: /识别结果|建筑信息/ });
     await expect(resultSection.first()).toBeVisible();

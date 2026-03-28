@@ -4,7 +4,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { buildPresentationReport, PresentationReport } from '../src/lib/ai/presentationReport';
+import { buildPresentationReport } from '../src/lib/ai/presentationReport';
 import type { RecognitionResult } from '../src/types/ai';
 
 // 加载 fixture (ES module compatible with type assertion)

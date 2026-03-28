@@ -60,7 +60,7 @@ export default function MainLayout() {
             </Link>
 
             {/* 导航菜单 */}
-            <div className="hidden md:flex items-center gap-1">
+            <nav aria-label="主导航" className="hidden md:flex items-center gap-1">
               {NAV_ITEMS.map((item, index) => (
                 <motion.div
                   key={item.path}
@@ -70,6 +70,7 @@ export default function MainLayout() {
                 >
                   <Link
                     to={item.path}
+                    aria-current={location.pathname === item.path ? 'page' : undefined}
                     className={`relative flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 group ${
                       location.pathname === item.path
                         ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-300 shadow-[0_10px_20px_rgba(59,130,246,0.15)]'
@@ -90,7 +91,7 @@ export default function MainLayout() {
                   </Link>
                 </motion.div>
               ))}
-            </div>
+            </nav>
 
             {/* 移动端菜单按钮 */}
             <div className="md:hidden">
@@ -106,12 +107,14 @@ export default function MainLayout() {
       </main>
 
       {/* 底部导航（移动端） */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[rgba(10,10,26,0.94)] backdrop-blur-xl border-t border-[rgba(99,102,241,0.12)] shadow-[0_-8px_22px_rgba(0,0,0,0.3)]">
+      <nav aria-label="移动端导航" className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[rgba(10,10,26,0.94)] backdrop-blur-xl border-t border-[rgba(99,102,241,0.12)] shadow-[0_-8px_22px_rgba(0,0,0,0.3)]">
         <div className="flex items-center justify-around py-2 px-2">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.path}
               to={item.path}
+              aria-label={item.label}
+              aria-current={location.pathname === item.path ? 'page' : undefined}
               className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all duration-300 ${
                 location.pathname === item.path
                   ? 'text-blue-400 bg-gradient-to-b from-blue-500/15 to-transparent'
@@ -145,6 +148,8 @@ function MobileMenu() {
       <button
         type="button"
         title="打开菜单"
+        aria-expanded={isOpen}
+        aria-label="导航菜单"
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 text-slate-400 hover:text-blue-300 transition-colors"
       >

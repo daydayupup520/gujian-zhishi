@@ -8,8 +8,8 @@ import type { RecognitionResult } from '../../types/ai';
 const API_BASE = 'https://open.bigmodel.cn/api/paas/v4';
 const MODEL = 'glm-4v-plus';
 
-// 从环境变量获取 API Key（Vercel 部署时直接硬编码）
-const API_KEY = import.meta.env.VITE_ZHIPU_API_KEY || 'c5cc6b4d1afc40f1b73106ae07e95cd5.ug0fjCyrxXSdv9jm';
+// 从环境变量获取 API Key
+const API_KEY = import.meta.env.VITE_ZHIPU_API_KEY || '';
 
 type Category = RecognitionResult['category'];
 type ComponentsInfo = NonNullable<RecognitionResult['components']>;
@@ -188,8 +188,7 @@ export async function recognizeBuildingMulti(imageBase64List: string[]): Promise
 
   const prompt = buildPrompt(normalized.length);
 
-  try {
-    const content = [
+  const content = [
       ...normalized.map((imageBase64) => ({
         type: 'image_url',
         image_url: {
@@ -228,10 +227,6 @@ export async function recognizeBuildingMulti(imageBase64List: string[]): Promise
     const data = await response.json();
     const contentText = data.choices?.[0]?.message?.content ?? '';
     return parseRecognitionResult(contentText, normalized.length);
-  } catch (error) {
-    console.error('识别失败:', error);
-    throw error;
-  }
 }
 
 /**

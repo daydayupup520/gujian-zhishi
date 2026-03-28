@@ -7,17 +7,15 @@ function createWindow() {
     width: 1400,
     height: 900,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      webSecurity: false
+      nodeIntegration: false,
+      contextIsolation: true,
+      webSecurity: true
     }
   })
 
   // 加载本地打包文件 - 使用 file:// 协议
   const indexPath = path.join(__dirname, 'dist', 'index.html')
   const fileUrl = pathToFileURL(indexPath).href
-  console.log('Loading:', fileUrl)
-  
   win.loadURL(fileUrl)
 }
 

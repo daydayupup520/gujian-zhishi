@@ -62,7 +62,6 @@ const HeatmapSphere = ({
 // 病害预测时间轴组件
 const DiseasePredictionTimeline = ({
   predictions,
-  diseaseType: _diseaseType
 }: {
   predictions: DiseasePrediction[];
   diseaseType: string;
@@ -84,7 +83,7 @@ const DiseasePredictionTimeline = ({
                   pred.severityProgression > 40 ? 'bg-yellow-500' : 'bg-green-500'
                 }`} />
                 {index < predictions.length - 1 && (
-                  <div className="w-0.5 h-full bg-gray-200 my-1" />
+                  <div className="w-0.5 h-full bg-indigo-500/20 my-1" />
                 )}
               </div>
               <div className="flex-1 pb-3">
@@ -100,16 +99,16 @@ const DiseasePredictionTimeline = ({
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="text-slate-500">
+                  <div className="text-slate-400">
                     恶化程度: <span className="text-white">{pred.severityProgression}%</span>
                   </div>
-                  <div className="text-slate-500">
+                  <div className="text-slate-400">
                     安全评分: <span className={pred.structuralSafetyScore < 50 ? 'text-red-400' : 'text-white'}>
                       {pred.structuralSafetyScore}
                     </span>
                   </div>
                 </div>
-                <p className="text-slate-500 text-xs mt-1">{pred.description}</p>
+                <p className="text-slate-400 text-xs mt-1">{pred.description}</p>
               </div>
             </div>
           </div>
@@ -225,21 +224,21 @@ export const DiseaseHeatmap3D: React.FC<DiseaseHeatmap3DProps> = ({
             exit={{ opacity: 0, x: 300 }}
             className="absolute top-4 right-4 w-80 max-h-[calc(100%-2rem)] overflow-y-auto"
           >
-            <div className="bg-white/95 rounded-xl border border-blue-500/25 overflow-hidden">
+            <div className="bg-[#0c1220]/98 backdrop-blur-xl rounded-xl border border-indigo-500/25 overflow-hidden shadow-xl">
               {/* 头部 */}
-              <div className="p-4 border-b border-gray-200">
+              <div className="p-4 border-b border-indigo-500/15">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-blue-400">
+                  <h3 className="text-lg font-medium text-blue-300">
                     {selectedHotspot.componentName}
                   </h3>
                   <button
                     onClick={() => setSelectedHotspot(null)}
-                    className="p-1 hover:bg-gray-200 rounded-full transition-colors"
+                    className="p-1 hover:bg-white/10 rounded-full transition-colors"
                   >
-                    <X className="w-5 h-5 text-slate-500" />
+                    <X className="w-5 h-5 text-slate-400" />
                   </button>
                 </div>
-                <p className="text-slate-500 text-sm mt-1">
+                <p className="text-slate-400 text-sm mt-1">
                   风险等级: {selectedHotspot.heatValue > 0.7 ? '高' : selectedHotspot.heatValue > 0.4 ? '中' : '低'}
                 </p>
               </div>
@@ -250,7 +249,7 @@ export const DiseaseHeatmap3D: React.FC<DiseaseHeatmap3DProps> = ({
                   selectedHotspot.diseases.map((disease) => (
                     <div
                       key={disease.id}
-                      className="bg-gray-100/80 rounded-lg p-3 border-l-4 border-red-500"
+                      className="bg-white/5 rounded-lg p-3 border-l-4 border-red-500"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <AlertTriangle className={`w-4 h-4 ${
@@ -266,8 +265,8 @@ export const DiseaseHeatmap3D: React.FC<DiseaseHeatmap3DProps> = ({
                           {disease.severity}
                         </span>
                       </div>
-                      <p className="text-slate-500 text-sm mb-2">{disease.description}</p>
-                      <div className="flex items-center gap-4 text-xs text-slate-500">
+                      <p className="text-slate-400 text-sm mb-2">{disease.description}</p>
+                      <div className="flex items-center gap-4 text-xs text-slate-400">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {disease.urgency}
@@ -280,17 +279,17 @@ export const DiseaseHeatmap3D: React.FC<DiseaseHeatmap3DProps> = ({
                     </div>
                   ))
                 ) : (
-                  <div className="bg-gray-100/80 rounded-lg p-3">
-                    <p className="text-slate-500 text-sm">暂无检测到病害，但存在以下典型风险：</p>
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <p className="text-slate-400 text-sm">暂无检测到病害，但存在以下典型风险：</p>
                     <ul className="mt-2 space-y-1">
                       {selectedHotspot.typicalDiseases.map((disease, idx) => (
-                        <li key={idx} className="text-slate-400 text-sm flex items-center gap-2">
+                        <li key={idx} className="text-slate-300 text-sm flex items-center gap-2">
                           <ChevronRight className="w-3 h-3 text-blue-400" />
                           {disease}
                         </li>
                       ))}
                     </ul>
-                    <p className="text-blue-400/80 text-xs mt-3">
+                    <p className="text-blue-300 text-xs mt-3">
                       预防建议: {selectedHotspot.preventionTips}
                     </p>
                   </div>
@@ -299,10 +298,10 @@ export const DiseaseHeatmap3D: React.FC<DiseaseHeatmap3DProps> = ({
 
               {/* AI预测切换 */}
               {predictions && (
-                <div className="border-t border-gray-200">
+                <div className="border-t border-indigo-500/15">
                   <button
                     onClick={() => setShowPrediction(!showPrediction)}
-                    className="w-full p-3 flex items-center justify-between text-blue-400 hover:bg-gray-100/80 transition-colors"
+                    className="w-full p-3 flex items-center justify-between text-blue-300 hover:bg-white/5 transition-colors"
                   >
                     <span className="flex items-center gap-2">
                       <Activity className="w-4 h-4" />

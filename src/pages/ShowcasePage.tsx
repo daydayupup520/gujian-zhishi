@@ -1,129 +1,44 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Building2, MapPin, Calendar, Search, Filter } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
-// 建筑数据 - 使用本地图片
-const BUILDINGS = [
-  {
-    id: 'chengqi-tulou',
-    name: '承启楼',
-    fullName: '承启楼（福建土楼）',
-    category: '民居',
-    era: '清',
-    year: '1709',
-    location: '福建省龙岩市永定区',
-    description: '永定土楼代表作之一，外圈高大夯土墙形成防御性围合，内设多层木构廊道与院落空间。',
-    image: '/images/chengqi-tulou.jpg',
-    features: ['夯土承重墙', '环形围合', '多层合院']
-  },
-  {
-    id: 'beijing-siheyuan',
-    name: '北京四合院',
-    fullName: '北京四合院（院落与影壁）',
-    category: '民居',
-    era: '明清',
-    year: '明清形制',
-    location: '北京市',
-    description: '以四面房屋围合成院为基本单元，讲究礼制轴线与居住秩序，是北方传统民居的典型形态。',
-    image: '/images/beijing-siheyuan.jpg',
-    features: ['院落式布局', '中轴对称', '坐北朝南']
-  },
-  {
-    id: 'forbidden-city-taihe',
-    name: '故宫太和殿',
-    fullName: '故宫太和殿',
-    category: '皇宫',
-    era: '明',
-    year: '1420',
-    location: '北京市东城区',
-    description: '紫禁城的核心建筑，重檐庑殿顶，是中国现存最大的木结构大殿。',
-    image: '/images/forbidden-city-taihe.jpg',
-    features: ['重檐庑殿顶', '金丝楠木柱', '和玺彩画']
-  },
-  {
-    id: 'zhaozhou-bridge',
-    name: '赵州桥',
-    fullName: '赵州桥（安济桥）',
-    category: '桥梁',
-    era: '隋',
-    year: '605',
-    location: '河北省赵县',
-    description: '世界现存最古老、保存最完整的单孔敞肩石拱桥，李春设计建造。',
-    image: '/images/zhaozhou-bridge.jpg',
-    features: ['单孔敞肩拱', '世界最古老石拱桥']
-  },
-  {
-    id: 'zhili-zongdushu',
-    name: '直隶总督署',
-    fullName: '直隶总督署',
-    category: '官府',
-    era: '清',
-    year: '1730',
-    location: '河北省保定市',
-    description: '清代直隶总督办公处所，是中国保存最完整的清代省级衙署。',
-    image: '/images/zhili-zongdushu.jpg',
-    features: ['衙署建筑', '中轴对称', '五进院落']
-  },
-  {
-    id: 'hongcun-residence',
-    name: '宏村民居',
-    fullName: '宏村古民居',
-    category: '民居',
-    era: '明清',
-    year: '明清时期',
-    location: '安徽省黟县',
-    description: '徽派建筑典型代表，以水为脉，马头墙错落有致，木雕砖雕精美。',
-    image: '/images/hongcun-residence.jpg',
-    features: ['徽派建筑', '马头墙', '三雕艺术']
-  },
-  {
-    id: 'lugou-bridge',
-    name: '卢沟桥',
-    fullName: '卢沟桥（广济桥）',
-    category: '桥梁',
-    era: '金',
-    year: '1192',
-    location: '北京市丰台区',
-    description: '北京现存最古老的石造联拱桥，以石狮雕刻闻名，马可·波罗称之为"世界上最好的桥"。',
-    image: '/images/lugou-bridge.jpg',
-    features: ['联拱石桥', '石狮雕刻', '马可·波罗赞誉']
-  },
-  {
-    id: 'prince-gong-mansion',
-    name: '恭王府',
-    fullName: '恭王府及花园',
-    category: '官府',
-    era: '清',
-    year: '1777',
-    location: '北京市西城区',
-    description: '清代规模最大的一座王府，曾是和珅、永璘的宅邸，后成为恭亲王奕訢的府邸。',
-    image: '/images/prince-gong-mansion.jpg',
-    features: ['王府建筑', '花园艺术', '锡晋斋']
-  }
-];
-
-const CATEGORIES = ['全部', '民居', '官府', '皇宫', '桥梁'];
+interface BuildingData {
+  id: string;
+  name: string;
+  nameEn: string;
+  category: string;
+  era: string;
+  year: string;
+  location: string;
+  description: string;
+  image: string;
+  features: string[];
+}
 
 // 建筑卡片组件
-function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; index: number }) {
+function BuildingCard({ building, index }: { building: BuildingData; index: number }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // buildings.json 中图片路径是相对路径如 "images/xxx.jpg"，需要加 /data/ 前缀
+  const imageSrc = building.image.startsWith('/')
+    ? building.image
+    : `/data/${building.image}`;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ delay: index * 0.05, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
       className="group bg-[rgba(15,20,40,0.6)] backdrop-blur-xl border border-indigo-500/10 rounded-3xl overflow-hidden hover:border-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
     >
       {/* 图片区域 */}
       <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900">
-        {/* 真实图片 */}
         {!imageError && (
           <img
-            src={building.image}
+            src={imageSrc}
             alt={building.name}
             className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
               imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
@@ -132,15 +47,13 @@ function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; inde
             onError={() => setImageError(true)}
           />
         )}
-        
-        {/* 加载占位 */}
+
         {!imageLoaded && !imageError && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
           </div>
         )}
-        
-        {/* 错误fallback */}
+
         {imageError && (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-900/40 via-blue-900/30 to-slate-900/40">
             <div className={`w-24 h-24 rounded-full flex items-center justify-center ${
@@ -155,11 +68,9 @@ function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; inde
             </div>
           </div>
         )}
-        
-        {/* 底部渐变遮罩 */}
+
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,26,0.95)] via-transparent to-transparent opacity-60" />
-        
-        {/* 分类标签 */}
+
         <div className="absolute top-4 left-4">
           <span className={`px-3 py-1.5 backdrop-blur-sm rounded-full text-xs font-semibold shadow-sm border ${
             building.category === '皇宫' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
@@ -170,11 +81,10 @@ function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; inde
             {building.category}
           </span>
         </div>
-        
-        {/* 悬浮显示的朝代 */}
+
         <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <p className="text-white/90 text-sm font-medium">
-            {building.era}代建筑 · {building.year}
+            {building.era} · {building.year}
           </p>
         </div>
       </div>
@@ -182,9 +92,9 @@ function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; inde
       {/* 内容区域 */}
       <div className="p-5">
         <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors duration-300">
-          {building.name}
+          {building.name.split('（')[0]}
         </h3>
-        <p className="text-xs text-slate-500 mb-3">{building.fullName}</p>
+        <p className="text-xs text-slate-400 mb-3">{building.name}</p>
 
         <div className="space-y-2 mb-4">
           <div className="flex items-center gap-2 text-sm text-slate-400">
@@ -201,12 +111,12 @@ function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; inde
           </div>
         </div>
 
-        <p className="text-slate-500 text-sm line-clamp-2 mb-4 leading-relaxed">
+        <p className="text-slate-400 text-sm line-clamp-2 mb-4 leading-relaxed">
           {building.description}
         </p>
 
         <div className="flex flex-wrap gap-1.5">
-          {building.features.slice(0, 2).map((feature) => (
+          {building.features.slice(0, 3).map((feature) => (
             <span
               key={`${building.id}-${feature}`}
               className="px-2.5 py-1 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 text-blue-300 rounded-full text-xs font-medium border border-blue-500/15"
@@ -221,17 +131,36 @@ function BuildingCard({ building, index }: { building: typeof BUILDINGS[0]; inde
 }
 
 export default function ShowcasePage() {
+  const [buildings, setBuildings] = useState<BuildingData[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('全部');
   const [searchQuery, setSearchQuery] = useState('');
 
+  useEffect(() => {
+    fetch('/data/buildings.json')
+      .then(res => res.json())
+      .then((data: { buildings: BuildingData[] }) => {
+        setBuildings(data.buildings);
+      })
+      .catch(() => {
+        setBuildings([]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const categories = useMemo(() => {
+    const cats = new Set(buildings.map(b => b.category));
+    return ['全部', ...Array.from(cats)];
+  }, [buildings]);
+
   const filteredBuildings = useMemo(() => {
-    return BUILDINGS.filter(building => {
+    return buildings.filter(building => {
       const matchesCategory = selectedCategory === '全部' || building.category === selectedCategory;
       const matchesSearch = building.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            building.location.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [buildings, selectedCategory, searchQuery]);
 
   return (
     <div className="min-h-screen pt-24 pb-20 page-container">
@@ -251,7 +180,7 @@ export default function ShowcasePage() {
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               返回首页
             </Link>
-            <span className="text-slate-600">|</span>
+            <span className="text-slate-500">|</span>
             <h1 className="text-2xl font-bold text-white flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
                 <Building2 className="w-5 h-5 text-white" />
@@ -281,7 +210,7 @@ export default function ShowcasePage() {
 
           <div className="flex flex-wrap gap-2">
             <Filter className="w-5 h-5 text-slate-500 mr-2" />
-            {CATEGORIES.map((category) => (
+            {categories.map((category) => (
               <button
                 type="button"
                 key={category}
@@ -298,15 +227,24 @@ export default function ShowcasePage() {
           </div>
         </motion.div>
 
+        {/* 加载状态 */}
+        {loading && (
+          <div className="flex items-center justify-center py-20">
+            <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
+          </div>
+        )}
+
         {/* 建筑网格 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredBuildings.map((building, index) => (
-            <BuildingCard key={building.id} building={building} index={index} />
-          ))}
-        </div>
+        {!loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredBuildings.map((building, index) => (
+              <BuildingCard key={building.id} building={building} index={index} />
+            ))}
+          </div>
+        )}
 
         {/* 空状态 */}
-        {filteredBuildings.length === 0 && (
+        {!loading && filteredBuildings.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -316,24 +254,26 @@ export default function ShowcasePage() {
               <Building2 className="w-10 h-10 text-indigo-400" />
             </div>
             <h3 className="text-xl font-bold text-white mb-2">没有找到匹配的建筑</h3>
-            <p className="text-slate-500">尝试调整搜索词或筛选条件</p>
+            <p className="text-slate-400">尝试调整搜索词或筛选条件</p>
           </motion.div>
         )}
 
         {/* 统计 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="mt-12 text-center"
-        >
-          <span className="text-slate-500">共展示 </span>
-          <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">{BUILDINGS.length}</span>
-          <span className="text-slate-500"> 座古建筑</span>
-          {selectedCategory !== '全部' && (
-            <span className="text-slate-500">，当前筛选: <span className="text-blue-400 font-medium">{selectedCategory}</span></span>
-          )}
-        </motion.div>
+        {!loading && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="mt-12 text-center"
+          >
+            <span className="text-slate-400">共展示 </span>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">{buildings.length}</span>
+            <span className="text-slate-400"> 座古建筑</span>
+            {selectedCategory !== '全部' && (
+              <span className="text-slate-400">，当前筛选: <span className="text-blue-400 font-medium">{selectedCategory}</span>（{filteredBuildings.length} 座）</span>
+            )}
+          </motion.div>
+        )}
       </div>
     </div>
   );

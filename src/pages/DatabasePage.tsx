@@ -54,8 +54,8 @@ export default function DatabasePage() {
         diseases: d.length,
         groups: g.length
       });
-    } catch (error) {
-      console.error('加载数据失败:', error);
+    } catch {
+      // 静默处理加载错误
     } finally {
       setLoading(false);
     }
@@ -77,8 +77,7 @@ export default function DatabasePage() {
       ]);
       await loadData();
       alert('数据库已清空');
-    } catch (error) {
-      console.error('清空数据库失败:', error);
+    } catch {
       alert('清空失败');
     }
   };
@@ -87,8 +86,8 @@ export default function DatabasePage() {
     try {
       await recognitionHistoryDB.delete(id);
       await loadData();
-    } catch (error) {
-      console.error('删除失败:', error);
+    } catch {
+      // 静默处理
     }
   };
 
@@ -96,8 +95,8 @@ export default function DatabasePage() {
     try {
       await favoriteBuildingsDB.remove(buildingId);
       await loadData();
-    } catch (error) {
-      console.error('删除失败:', error);
+    } catch {
+      // 静默处理
     }
   };
 
@@ -105,8 +104,8 @@ export default function DatabasePage() {
     try {
       await diseaseRecordsDB.delete(id);
       await loadData();
-    } catch (error) {
-      console.error('删除失败:', error);
+    } catch {
+      // 静默处理
     }
   };
 
@@ -114,8 +113,8 @@ export default function DatabasePage() {
     try {
       await comparisonGroupsDB.delete(id);
       await loadData();
-    } catch (error) {
-      console.error('删除失败:', error);
+    } catch {
+      // 静默处理
     }
   };
 
@@ -226,7 +225,7 @@ export default function DatabasePage() {
                               </span>
                             </div>
                             <p className="text-sm text-slate-400 line-clamp-1">{item.result.description}</p>
-                            <p className="text-xs text-slate-600 mt-1">
+                            <p className="text-xs text-slate-400 mt-1">
                               {new Date(item.timestamp).toLocaleString()} · {item.imageCount} 张图片
                             </p>
                           </div>
@@ -266,7 +265,7 @@ export default function DatabasePage() {
                               </span>
                             </div>
                             <p className="text-sm text-slate-400">{item.location}</p>
-                            <p className="text-xs text-slate-600 mt-1">
+                            <p className="text-xs text-slate-400 mt-1">
                               收藏于 {new Date(item.addedAt).toLocaleString()}
                             </p>
                           </div>
@@ -317,7 +316,7 @@ export default function DatabasePage() {
                               </span>
                             </div>
                             <p className="text-sm text-slate-400">{item.diseaseType} - {item.position}</p>
-                            <p className="text-xs text-slate-600 mt-1">
+                            <p className="text-xs text-slate-400 mt-1">
                               记录于 {new Date(item.recordedAt).toLocaleString()}
                             </p>
                           </div>
@@ -357,7 +356,7 @@ export default function DatabasePage() {
                               </span>
                             </div>
                             <p className="text-sm text-slate-400">{item.notes || '无备注'}</p>
-                            <p className="text-xs text-slate-600 mt-1">
+                            <p className="text-xs text-slate-400 mt-1">
                               创建于 {new Date(item.createdAt).toLocaleString()}
                             </p>
                           </div>

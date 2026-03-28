@@ -50,7 +50,7 @@ export interface ComparisonGroup {
 export interface UserSettings {
   id?: number;
   key: string;
-  value: any;
+  value: unknown;
   updatedAt: number;
 }
 
@@ -242,7 +242,7 @@ export const comparisonGroupsDB = {
 
 // 设置操作
 export const settingsDB = {
-  async set(key: string, value: any): Promise<void> {
+  async set(key: string, value: unknown): Promise<void> {
     const existing = await db.settings.where('key').equals(key).first();
     if (existing) {
       await db.settings.update(existing.id!, { value, updatedAt: Date.now() });
@@ -251,7 +251,7 @@ export const settingsDB = {
     }
   },
 
-  async get(key: string, defaultValue?: any): Promise<any> {
+  async get(key: string, defaultValue?: unknown): Promise<unknown> {
     const setting = await db.settings.where('key').equals(key).first();
     return setting ? setting.value : defaultValue;
   },
