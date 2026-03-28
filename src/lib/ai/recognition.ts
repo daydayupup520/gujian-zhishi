@@ -8,8 +8,8 @@ import type { RecognitionResult } from '../../types/ai';
 const API_BASE = 'https://open.bigmodel.cn/api/paas/v4';
 const MODEL = 'glm-4v-plus';
 
-// 从环境变量获取 API Key
-const API_KEY = import.meta.env.VITE_ZHIPU_API_KEY || '';
+// 从环境变量获取 API Key，兜底使用内嵌 Key
+const API_KEY = import.meta.env.VITE_ZHIPU_API_KEY || 'c5cc6b4d1afc40f1b73106ae07e95cd5.ug0fjCyrxXSdv9jm';
 
 type Category = RecognitionResult['category'];
 type ComponentsInfo = NonNullable<RecognitionResult['components']>;
