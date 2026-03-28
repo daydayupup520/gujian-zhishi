@@ -5,10 +5,10 @@ import { useState, useEffect } from 'react';
 
 const NAV_ITEMS = [
   { path: '/', icon: Home, label: '首页' },
-  { path: '/showcase', icon: Building2, label: '建筑展示' },
   { path: '/diagnosis', icon: Stethoscope, label: '病害诊断' },
-  { path: '/comparison', icon: GitCompare, label: '建筑对比' },
   { path: '/knowledge', icon: BookOpen, label: '知识图谱' },
+  { path: '/comparison', icon: GitCompare, label: '建筑对比' },
+  { path: '/showcase', icon: Building2, label: '建筑展示' },
   { path: '/database', icon: Database, label: '数据管理' },
 ];
 
