@@ -76,17 +76,18 @@ export default function HomePage() {
       {/* ── Hero Section ───────────────────────────────── */}
       <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
 
-        {/* 背景图片轮播 */}
-        {HERO_IMAGES.map((src, i) => (
+        {/* 背景图片轮播：只渲染当前帧和前一帧，避免一次性加载所有图片 */}
+        <AnimatePresence mode="sync">
           <motion.div
-            key={src}
+            key={heroIndex}
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${src})` }}
+            style={{ backgroundImage: `url(${HERO_IMAGES[heroIndex]})` }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: i === heroIndex ? 1 : 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: 'easeInOut' }}
           />
-        ))}
+        </AnimatePresence>
 
         {/* 多层遮罩：深色底 + 顶部渐变 + 底部渐变 */}
         <div className="absolute inset-0 bg-[#050a1a]/60" />
@@ -241,6 +242,7 @@ export default function HomePage() {
                 <img
                   src={b.img}
                   alt={b.name}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 {/* 渐变遮罩 */}
@@ -296,7 +298,7 @@ export default function HomePage() {
               >
                 {/* 背景图 */}
                 <div className="absolute inset-0">
-                  <img src={feature.img} alt="" className="w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 scale-105 group-hover:scale-110 transition-transform" />
+                  <img src={feature.img} alt="" loading="lazy" className="w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 scale-105 group-hover:scale-110 transition-transform" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0d1426] via-[#0d1426]/80 to-[#0d1426]/50" />
                 </div>
                 {/* 内容 */}
