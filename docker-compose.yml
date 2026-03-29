@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  gujian-zhishi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # 可以在这里修改 API Key，或使用默认值
+        VITE_ZHIPU_API_KEY: ${VITE_ZHIPU_API_KEY:-c5cc6b4d1afc40f1b73106ae07e95cd5.ug0fjCyrxXSdv9jm}
+    image: gujian-zhishi:latest
+    container_name: gujian-zhishi
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 可选：使用 watchtower 自动更新
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 3600 gujian-zhishi
+    restart: unless-stopped
+    profiles:
+      - auto-update
