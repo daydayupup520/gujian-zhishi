@@ -1,0 +1,51 @@
+# 构建输出目录
+dist
+
+# 依赖目录
+node_modules
+
+# 开发环境文件
+.env.local
+.env.*.local
+
+# 编辑器配置
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 日志文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 测试文件
+coverage
+e2e/playwright-report
+e2e/test-results
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# Git 目录
+.git
+.gitignore
+
+# 文档（可选，如果文档很大）
+# docs
+# *.md
+
+# 源代码（因为我们是构建后部署）
+# src
+# public
+# index.html
+# *.config.js
+# *.config.ts
+# package.json
+# package-lock.json
+# tsconfig.json
