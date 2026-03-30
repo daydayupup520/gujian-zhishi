@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
+import { ContactShadows, OrbitControls } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import type { RecognitionResult } from '../types/ai';
 
@@ -412,7 +412,9 @@ export const Scene3D: React.FC<Scene3DProps> = ({
           autoRotateSpeed={0.35}
         />
 
-        <Environment preset="city" />
+        {/* 使用简单的环境光代替 HDR，避免 CDN 加载失败 */}
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 10, 7]} intensity={0.8} color="#ffffff" />
       </Canvas>
 
       <div className="absolute bottom-4 left-4 right-4 z-20 grid grid-cols-1 md:grid-cols-4 gap-2">
