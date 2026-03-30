@@ -13,7 +13,7 @@ export default defineConfig({
       webp: { lossless: false, quality: 75 },
     }),
   ],
-  base: './',
+  base: '/',
   build: {
     target: 'es2015',
     minify: 'terser',
