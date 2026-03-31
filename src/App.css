@@ -1,1 +1,55 @@
-/* Global app styles - project-specific overrides go here */
+/* 全局亮色主题覆盖 */
+
+/* 页面背景 - 改为浅色渐变 */
+body {
+  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #f1f5f9 100%) !important;
+  color: #1e293b !important;
+}
+
+/* 覆盖深色卡片背景 */
+.bg-\[rgba\(15\,20\,40\,0\.5\)\],
+.bg-\[rgba\(15\,20\,40\,0\.4\)\],
+.bg-\[rgba\(15\,20\,40\,0\.6\)\],
+.bg-\[rgba\(15\,20\,40\,0\.7\)\] {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* 覆盖深蓝色背景 */
+.bg-\[\#0d1426\],
+.bg-\[rgba\(10\,10\,26\,0\.94\)\] {
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 覆盖导航栏背景 */
+nav[class*="bg-[rgba"] {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* 边框颜色调整为浅色 */
+.border-indigo-500\/10,
+.border-indigo-500\/20,
+.border-indigo-500\/30 {
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+/* 文字颜色调整 */
+.text-white {
+  color: #1e293b !important;
+}
+
+.text-slate-400 {
+  color: #64748b !important;
+}
+
+/* 输入框背景 */
+input, select, textarea {
+  background: rgba(255, 255, 255, 0.8) !important;
+  color: #1e293b !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+
+/* 按钮调整 */
+button {
+  color: inherit;
+}

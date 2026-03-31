@@ -1,0 +1,98 @@
+/* 亮色主题全局样式 */
+
+/* 根元素变量 */
+:root {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-light: rgba(99, 102, 241, 0.15);
+  --border-medium: rgba(99, 102, 241, 0.25);
+  --accent: #3b82f6;
+}
+
+/* 暗色主题变量 */
+:root.dark {
+  --bg-primary: #0f1024;
+  --bg-secondary: #0a0a1a;
+  --bg-card: rgba(15, 20, 40, 0.6);
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-light: rgba(99, 102, 241, 0.1);
+  --border-medium: rgba(99, 102, 241, 0.2);
+  --accent: #60a5fa;
+}
+
+/* 应用变量 */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* 通用卡片样式 */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--border-medium);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+}
+
+/* 导航栏 */
+.navbar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-light);
+  backdrop-filter: blur(12px);
+}
+
+/* 输入框 */
+.input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* 覆盖原项目的深色样式 */
+.bg-dark-overlay {
+  background: linear-gradient(to bottom, transparent, var(--bg-primary)) !important;
+}
+
+/* 3D场景容器 - 保持深色以突出模型 */
+.scene-3d {
+  background: linear-gradient(135deg, #1a1f3a 0%, #0f1428 100%) !important;
+  border-radius: 1rem;
+}

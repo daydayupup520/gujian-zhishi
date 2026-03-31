@@ -7,24 +7,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 科技深蓝色彩系统
+        // 明亮科技蓝色彩系统（提升亮度）
         'china': {
-          'red': '#a78bfa',              // 淡紫 - 强调色
-          'red-light': '#c4b5fd',
+          'red': '#8b5cf6',              // 紫罗兰 - 强调色
+          'red-light': '#a78bfa',
           'red-dark': '#7c3aed',
           'gold': '#3b82f6',             // 主蓝 - 主色
           'gold-light': '#60a5fa',
           'gold-dark': '#2563eb',
-          'ink': '#f1f5f9',              // 银白 - 主要文字
-          'ink-light': '#1e293b',
-          'ink-muted': '#94a3b8',
-          'ink-soft': '#64748b',
-          'paper': '#0f1024',            // 深蓝黑
-          'paper-dark': '#0a0a1a',
+          'ink': '#1e293b',              // 深灰 - 主要文字
+          'ink-light': '#334155',
+          'ink-muted': '#64748b',
+          'ink-soft': '#94a3b8',
+          'paper': '#f8fafc',            // 浅灰白背景（原：#0f1024）
+          'paper-dark': '#f1f5f9',       // 更浅的灰（原：#0a0a1a）
           'cinnabar': '#8b5cf6',         // 紫色
           'verdigris': '#06b6d4',        // 青色
           'indigo': '#6366f1',           // 靛蓝
-          'cream': '#0a0a1a',            // 深空黑
+          'cream': '#ffffff',            // 纯白（原：#0a0a1a）
         },
         'imperial-red': '#a78bfa',
         'imperial-gold': '#3b82f6',
